@@ -1,0 +1,37 @@
+#####################################################
+# A markdownreveal configuration file template. Visit
+#   TODO (url)
+# for information on how to create your own.
+#####################################################
+
+
+# A valid reveal.js version such as '3.4.1' ('latest' can be used too)
+reveal_version: 'latest'
+
+# Simple footer/header HTML such as 'Name | <a href="wewbsite">website</a>'
+footer: 'OpenSistemas | <a href="www.opensistemas.com">www.opensistemas.com</a>'
+header: ''
+
+# Styles
+logo: 'style/logo.svg'
+background: 'style/background.svg'
+warmup: 'style/warmup.svg'
+custom_css: 'style/custom.css'
+
+# Path, whithin the home directory to store local auto-generated content in
+local_path: '.markdownreveal'
+
+# Extra arguments for reveal.js
+reveal_extra:
+  controls: 'true'
+  progress: 'true'
+  slideNumber: 'false'
+  history: 'true'
+  keyboard: 'true'
+  overview: 'true'
+  center: 'true'
+  showNotes: 'false'
+  previewLinks: 'false'
+  transition: 'slide'
+  transitionSpeed: 'default'
+  theme: 'white'

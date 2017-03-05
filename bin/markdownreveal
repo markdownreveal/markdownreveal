@@ -1,0 +1,11 @@
+#!/usr/bin/env python
+from markdownreveal import run
+
+# TODO:
+#   - argparse: --template (maybe use click for subcommands?)
+#   - argparse: --clean
+#   - argparse: --warmup
+#   - argparse: --output-here
+#   - argparse: --ghpages
+#   - argparse: --pdf (decktape.js)
+run()
