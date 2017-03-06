@@ -1,4 +1,5 @@
 import os
+import re
 import tarfile
 import collections
 from pathlib import Path
@@ -79,8 +80,14 @@ def latest_revealjs_release() -> str:
     Fetch the latest reveal.js release tag.
     """
     releases = 'https://api.github.com/repos/hakimel/reveal.js/releases'
-    latest = requests.get(releases).json()[0]
-    return latest['tag_name']
+    response = requests.get(releases)
+    # Try with GitHub API first
+    if response.status_code == 200:
+        return response.json()[0]['tag_name']
+    # Try to parse latest release manually...
+    response = requests.get('https://github.com/hakimel/reveal.js/releases')
+    return re.findall('/hakimel/reveal.js/releases/tag/([^"]*)',
+                      response.text)[0]
 
 
 def clean_revealjs_tar_members(members: TarMembers) -> TarMembers:
