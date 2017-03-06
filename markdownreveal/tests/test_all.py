@@ -13,8 +13,8 @@ from markdownreveal import load_config
 from markdownreveal import latest_revealjs_release
 from markdownreveal import clean_revealjs_tar_members
 from markdownreveal import initialize_localdir
-from markdownreveal import find_indexes
 from markdownreveal import markdown_to_reveal
+from markdownreveal.tweak import find_indexes
 
 
 def test_update_config():

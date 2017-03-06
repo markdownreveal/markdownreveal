@@ -41,7 +41,7 @@ setup(
         'watchdog'],
     extras_require={
         'dev': [],
-        'test': ['tox'],  # TODO
+        'test': ['tox'],
         'docs': ['sphinx', 'numpydoc', 'sphinx_rtd_theme'],  # TODO
     },
 )

@@ -1,4 +1,3 @@
-import re
 import os
 import tarfile
 import collections
@@ -18,6 +17,8 @@ from livereload import Server
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 from watchdog.observers.inotify_buffer import InotifyBuffer
+
+from .tweak import tweak_html
 
 
 __version__ = '0.0.1'
@@ -149,24 +150,6 @@ def initialize_localdir(localdir: Path, reveal_version: str) -> Path:
     return outdir
 
 
-def find_indexes(haystack: List[str], regex: str) -> List[int]:
-    """
-    Find indexes in a list where a regular expression matches.
-
-    Parameters
-    ----------
-    haystack
-        List of strings.
-    regex
-        Regular expression to match.
-
-    Returns
-    -------
-        The indexes where the regular expression was found.
-    """
-    return [i for i, item in enumerate(haystack) if re.search(regex, item)]
-
-
 def markdown_to_reveal(input_file: Path, reveal_extra: Config) -> str:
     """
     Transform a Markdown input file to an HTML (reveal.js) output string.
@@ -196,39 +179,6 @@ def markdown_to_reveal(input_file: Path, reveal_extra: Config) -> str:
         extra_args=extra_args,
     )
     return output
-
-
-def tweak_html(html, config):
-    """
-    TODO
-    """
-    html = html.splitlines()
-    if config['custom_css']:
-        index = find_indexes(html, 'stylesheet.*id="theme"')[0]
-        text = '<link rel="stylesheet" href="%s">' % config['custom_css']
-        html.insert(index + 1, text)
-    if Path(config['warmup']).exists():
-        # TODO: maybe set warmup parameter as a URL? (autogenerate QR code)
-        text = '<section><img src="%s" /></section>' % config['warmup']
-        index = find_indexes(html, 'div class="slides"')[0]
-        html.insert(index + 1, text)
-    if config['footer']:
-        text = '<div class="footer">%s</div>' % config['footer']
-        for index in find_indexes(html, '<div class=\"reveal\">'):
-            html.insert(index + 1, text)
-    if config['header']:
-        text = '<div class="header">%s</div>' % config['header']
-        for index in find_indexes(html, '<div class=\"reveal\">'):
-            html.insert(index + 1, text)
-    if Path(config['logo']).exists():
-        text = '<div class="logo"><img src="%s" /></div>' % config['logo']
-        for index in find_indexes(html, '<div class=\"reveal\">'):
-            html.insert(index + 1, text)
-    if Path(config['background']).exists():
-        text = '<section data-background="%s">' % config['background']
-        for index in find_indexes(html, '<section>'):
-            html[index] = html[index].replace('<section>', text)
-    return '\n'.join(html)
 
 
 def generate():
