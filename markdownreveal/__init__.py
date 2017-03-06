@@ -65,9 +65,10 @@ def load_config() -> Config:
     config_file = Path('config.yaml')
     if config_file.exists():
         print('loading configuration file...')
-        config.update_config(yaml.load(open(config_file)))
+        update_config(config, yaml.load(open(config_file)))
     config['local_path'] = Path.home() / config['local_path']
     config['output_path'] = config['local_path'] / 'out'
+    config['reveal_extra']['theme'] = config['theme']
     print(config.items())
     return config
 
@@ -163,7 +164,7 @@ def find_indexes(haystack: List[str], regex: str) -> List[int]:
     -------
         The indexes where the regular expression was found.
     """
-    return [i for i, item in enumerate(html) if re.search(regex, item)]
+    return [i for i, item in enumerate(haystack) if re.search(regex, item)]
 
 
 def markdown_to_reveal(input_file: Path, reveal_extra: Config) -> str:

@@ -8,8 +8,11 @@
 # A valid reveal.js version such as '3.4.1' ('latest' can be used too)
 reveal_version: 'latest'
 
+# reveal.js base theme
+theme: 'white'
+
 # Simple footer/header HTML such as 'Name | <a href="wewbsite">website</a>'
-footer: 'OpenSistemas | <a href="www.opensistemas.com">www.opensistemas.com</a>'
+footer: ''
 header: ''
 
 # Styles
@@ -34,4 +37,3 @@ reveal_extra:
   previewLinks: 'false'
   transition: 'slide'
   transitionSpeed: 'default'
-  theme: 'white'
