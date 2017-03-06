@@ -148,7 +148,7 @@ def initialize_localdir(localdir: Path, reveal_version: str) -> Path:
         reveal_tar, headers = urlretrieve(url)
         with tarfile.open(reveal_tar) as tar:
             members = clean_revealjs_tar_members(tar.getmembers())
-            tar.extractall(reveal_path, members)
+            tar.extractall(str(reveal_path), members)
         os.remove(reveal_tar)
     symlink = outdir / 'revealjs'
     if symlink.exists():

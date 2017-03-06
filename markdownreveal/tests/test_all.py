@@ -68,13 +68,13 @@ def test_initialize_localdir(version, tag):
     """
     localdir = Path(mkdtemp())
     out = initialize_localdir(localdir, version)
-    package = json.load(open(out / 'revealjs' / 'package.json'))
+    package = json.load(open(str(out / 'revealjs' / 'package.json')))
     assert package['version'] == tag
     # If version is already downloaded initialization should be pretty fast
     t0 = time.time()
     out = initialize_localdir(localdir, version)
     assert time.time() - t0 < 0.01
-    rmtree(localdir)
+    rmtree(str(localdir))
 
 
 def test_find_indexes():
