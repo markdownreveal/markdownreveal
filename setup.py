@@ -13,8 +13,11 @@ with open(pjoin('markdownreveal', '__init__.py')) as f:
 setup(
     name='markdownreveal',
     version=version,
-    description='TODO',  # TODO
-    long_description='''TODO.''',  # TODO
+    description='Create presentations with simple Markdown notation',
+    long_description='''This tool allows you to create and visualize
+        presentations with simple Markdown notation. It is based on
+        reveal.js and is able to generate the required HTML and refresh
+        your browser view for easier and faster presentation creation.''',
     url='https://github.com/peque/markdownreveal',
     author='Miguel Sánchez de León Peque',
     author_email='peeque@neosit.es',
@@ -41,6 +44,6 @@ setup(
     extras_require={
         'dev': [],
         'test': ['tox'],
-        'docs': ['sphinx', 'numpydoc', 'sphinx_rtd_theme'],  # TODO
+        'docs': ['sphinx', 'numpydoc', 'sphinx_rtd_theme'],
     },
 )
