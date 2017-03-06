@@ -105,7 +105,6 @@ Once upon a time...
 - some small worms
     ''')
     html = markdown_to_reveal(tmp, {})
-    assert '<h1>Subsection</h1>' in html
     assert '<p>Once upon a time...</p>' in html
     assert '<li>there were</li>' in html
     tmp.unlink()
