@@ -18,12 +18,11 @@ setup(
     url='https://github.com/peque/markdownreveal',
     author='Miguel Sánchez de León Peque',
     author_email='peeque@neosit.es',
-    license='TODO',  # TODO
+    license='BSD License',
     classifiers=[
         'Development Status :: 3 - Alpha',
-        'Intended Audience :: TODO',  # TODO
-        'Topic :: Software Development :: TODO',  # TODO
-        'License :: OSI Approved :: TODO',  # TODO
+        'Topic :: Utilities',
+        'License :: OSI Approved :: BSD License',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
