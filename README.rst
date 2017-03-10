@@ -5,6 +5,9 @@
 |requirements|
 
 
+Markdownreveal
+==============
+
 A tool for creating presentations with simple Markdown notation. Documentation can be found at the `official website <https://markdownreveal.readthedocs.io/>`_.
 
 
