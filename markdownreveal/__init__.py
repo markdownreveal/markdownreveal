@@ -188,7 +188,7 @@ def markdown_to_reveal(input_file: Path, reveal_extra: Config) -> str:
     return output
 
 
-def generate():
+def generate(markdown_file):
     """
     TODO
     """
@@ -201,10 +201,6 @@ def generate():
                                       config['reveal_version'])
     print('Using reveal.js found in %s' % reveal_path)
 
-    # TODO:
-    #   - input file as arg
-    input_file = Path('presentation.md')
-
     # rsync
     command = [
         'rsync',
@@ -212,14 +208,14 @@ def generate():
         '--exclude', 'revealjs',
         '--exclude', '.git',
         '-av',
-        '%s/' % input_file.resolve().parent,
+        '%s/' % markdown_file.resolve().parent,
         '%s/' % config['output_path'],
     ]
     check_output(command)
 
     # Convert from markdown
     print('Converting to markdown...')
-    output = markdown_to_reveal(input_file,
+    output = markdown_to_reveal(markdown_file,
                                 reveal_extra=config['reveal_extra'])
 
     # HTML substitution
@@ -240,7 +236,8 @@ InotifyBuffer.delay = 0.1
 
 
 class Handler(FileSystemEventHandler):
-    def __init__(self, period=0.1):
+    def __init__(self, markdown_file, period=0.1):
+        self.markdown_file = markdown_file
         self.period = period
         self.timer = None
         self.set_timer()
@@ -253,17 +250,19 @@ class Handler(FileSystemEventHandler):
         self.timer.start()
 
     def set_timer(self):
-        self.timer = Timer(self.period, generate)
+        self.timer = Timer(self.period, generate, args=(self.markdown_file,))
 
 
-def run():
+def run(markdown_file):
     """
     TODO
     """
+    markdown_file = Path(markdown_file)
+
     observer = Observer()
-    handler = Handler()
+    handler = Handler(markdown_file)
     # Initial generation
-    generate()
+    generate(markdown_file)
     observer.schedule(handler, '.', recursive=True)
     observer.start()
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import click
 from markdownreveal import run
 
 # TODO:
@@ -8,4 +9,13 @@ from markdownreveal import run
 #   - argparse: --output-here
 #   - argparse: --ghpages
 #   - argparse: --pdf (decktape.js)
-run()
+
+
+@click.command()
+@click.argument('markdown_file')
+def markdownreveal(markdown_file):
+    run(markdown_file)
+
+
+if __name__ == '__main__':
+    markdownreveal()

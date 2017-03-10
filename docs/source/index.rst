@@ -20,6 +20,7 @@ Contents
 .. toctree::
    :maxdepth: 2
 
+   usage.rst
    developers.rst
    license.rst
 

@@ -40,7 +40,8 @@ setup(
         'requests',
         'pypandoc',
         'livereload',
-        'watchdog'],
+        'watchdog',
+        'click'],
     extras_require={
         'dev': [],
         'test': ['tox'],
