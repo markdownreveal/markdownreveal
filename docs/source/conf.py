@@ -49,7 +49,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Markdownreveal'
-copyright = u'2016, The Markdownreveal contributors.'
+copyright = u'The Markdownreveal contributors.'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
