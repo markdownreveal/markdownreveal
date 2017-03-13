@@ -1,28 +1,29 @@
 #####################################################
 # A markdownreveal configuration file template. Visit
-#   TODO (url)
+#   https://markdownreveal.readthedocs.io/
 # for information on how to create your own.
 #####################################################
 
 
-# A valid reveal.js version such as '3.4.1' ('latest' can be used too)
-reveal_version: 'latest'
+#####################
+# Style configuration
 
-# reveal.js base theme
+# #reveal.js base theme
 theme: 'white'
+
+# Markdownreveal style
+style: 'https://github.com/Peque/markdownreveal-style/archive/master.tar.gz'
 
 # Simple footer/header HTML such as 'Name | <a href="wewbsite">website</a>'
 footer: ''
 header: ''
 
-# Styles
-logo: 'style/logo.svg'
-background: 'style/background.svg'
-warmup: 'style/warmup.svg'
-custom_css: 'style/custom.css'
 
-# Path, whithin the home directory to store local auto-generated content in
-local_path: '.markdownreveal'
+#########################
+# Reveal.js configuration
+
+# A valid reveal.js version such as '3.4.1' ('latest' can be used too)
+reveal_version: 'latest'
 
 # Extra arguments for reveal.js
 reveal_extra:
@@ -37,3 +38,17 @@ reveal_extra:
   previewLinks: 'false'
   transition: 'slide'
   transitionSpeed: 'default'
+
+
+###########################
+# Local paths configuration
+
+# Styles
+style_path: 'style'
+style_logo: 'logo.svg'
+style_background: 'background.svg'
+style_warmup: 'warmup.svg'
+style_custom_css: 'custom.css'
+
+# Path, whithin the home directory to store local auto-generated content in
+local_path: '.markdownreveal'

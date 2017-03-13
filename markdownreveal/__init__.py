@@ -2,6 +2,7 @@ import os
 import re
 import tarfile
 import collections
+from hashlib import sha1
 from pathlib import Path
 from subprocess import check_output
 from urllib.request import urlretrieve
@@ -45,6 +46,8 @@ def update_config(template: Config, config: Config) -> Config:
     -------
         The resulting (updated) dictionary.
     """
+    if not config:
+        return template
     for key, value in config.items():
         if isinstance(value, collections.Mapping):
             recurse = update_config(template.get(key, {}), value)
@@ -90,7 +93,7 @@ def latest_revealjs_release() -> str:
                       response.text)[0]
 
 
-def clean_revealjs_tar_members(members: TarMembers) -> TarMembers:
+def clean_tar_members(members: TarMembers) -> TarMembers:
     """
     Strip .tar components (i.e.: remove top-level directory) from members.
 
@@ -118,7 +121,8 @@ def clean_revealjs_tar_members(members: TarMembers) -> TarMembers:
     return clean
 
 
-def initialize_localdir(localdir: Path, reveal_version: str) -> Path:
+def initialize_localdir(localdir: Path, reveal_version: str,
+                        style_url: str) -> Path:
     """
     Initialize local directory with the required reveal.js files.
 
@@ -129,6 +133,8 @@ def initialize_localdir(localdir: Path, reveal_version: str) -> Path:
     reveal_version
         String with the reveal.js version to use (i.e.: `3.0.1`). The value
         `latest` is also allowed.
+    style_url
+        String with the URL to download the style from.
 
     Returns
     -------
@@ -138,6 +144,7 @@ def initialize_localdir(localdir: Path, reveal_version: str) -> Path:
     # Initialize local directory
     outdir = localdir / 'out'
     outdir.mkdir(parents=True, exist_ok=True)
+
     # Download reveal.js
     reveal_path = localdir / reveal_version
     if not reveal_path.exists():
@@ -147,13 +154,30 @@ def initialize_localdir(localdir: Path, reveal_version: str) -> Path:
         url = url % reveal_version
         reveal_tar, headers = urlretrieve(url)
         with tarfile.open(reveal_tar) as tar:
-            members = clean_revealjs_tar_members(tar.getmembers())
+            members = clean_tar_members(tar.getmembers())
             tar.extractall(str(reveal_path), members)
         os.remove(reveal_tar)
     symlink = outdir / 'revealjs'
     if symlink.exists():
         symlink.unlink()
     symlink.symlink_to(reveal_path, target_is_directory=True)
+
+    # Style
+    symlink = outdir / '_style'
+    if symlink.exists():
+        symlink.unlink()
+    if not style_url:
+        return outdir
+    style_version = sha1(style_url.encode('utf')).hexdigest()
+    style_path = localdir / style_version
+    if not style_path.exists():
+        style_tar, headers = urlretrieve(style_url)
+        with tarfile.open(style_tar) as tar:
+            members = clean_tar_members(tar.getmembers())
+            tar.extractall(str(style_path), members)
+        os.remove(style_tar)
+    symlink.symlink_to(style_path, target_is_directory=True)
+
     return outdir
 
 
@@ -198,7 +222,8 @@ def generate(markdown_file):
 
     # Initialize localdir
     reveal_path = initialize_localdir(config['local_path'],
-                                      config['reveal_version'])
+                                      config['reveal_version'],
+                                      config['style'])
     print('Using reveal.js found in %s' % reveal_path)
 
     # rsync
@@ -206,6 +231,7 @@ def generate(markdown_file):
         'rsync',
         '--delete',
         '--exclude', 'revealjs',
+        '--exclude', '_style',
         '--exclude', '.git',
         '-av',
         '%s/' % markdown_file.resolve().parent,

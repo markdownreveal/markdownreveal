@@ -1,4 +1,5 @@
 import re
+from hashlib import sha1
 from pathlib import Path
 from typing import List
 
@@ -21,26 +22,17 @@ def find_indexes(haystack: List[str], regex: str) -> List[int]:
     return [i for i, item in enumerate(haystack) if re.search(regex, item)]
 
 
-def tweak_html_css(html, custom_css):
+def find_style_file(filename, config):
     """
     TODO
     """
-    if not custom_css:
+    outpath = config['local_path'] / 'out'
+    filepath = outpath / config['style_path'] / config[filename]
+    if not filepath.exists():
+        filepath = outpath / '_style' / config[filename]
+    if not filepath.exists():
         return
-    index = find_indexes(html, 'stylesheet.*id="theme"')[0]
-    text = '<link rel="stylesheet" href="%s">' % custom_css
-    html.insert(index + 1, text)
-
-
-def tweak_html_warmup(html, warmup):
-    """
-    TODO
-    """
-    if not warmup.exists():
-        return
-    text = '<section><img src="%s" /></section>' % warmup
-    index = find_indexes(html, 'div class="slides"')[0]
-    html.insert(index + 1, text)
+    return filepath.relative_to(filepath.parents[1])
 
 
 def tweak_html_footer(html, footer):
@@ -48,10 +40,11 @@ def tweak_html_footer(html, footer):
     TODO
     """
     if not footer:
-        return
+        return False
     text = '<div class="footer">%s</div>' % footer
     for index in find_indexes(html, '<div class=\"reveal\">'):
         html.insert(index + 1, text)
+    return True
 
 
 def tweak_html_header(html, header):
@@ -65,26 +58,53 @@ def tweak_html_header(html, header):
         html.insert(index + 1, text)
 
 
-def tweak_html_logo(html, logo):
+def tweak_html_warmup(html, config):
     """
     TODO
     """
-    if not logo.exists():
+    fname = find_style_file('style_warmup', config)
+    if not fname:
         return
-    text = '<div class="logo"><img src="%s" /></div>' % logo
+    text = '<section><img src="%s" /></section>' % fname
+    index = find_indexes(html, 'div class="slides"')[0]
+    html.insert(index + 1, text)
+
+
+def tweak_html_logo(html, config):
+    """
+    TODO
+    """
+    fname = find_style_file('style_logo', config)
+    if not fname:
+        return
+    text = '<div class="logo"><img src="%s" /></div>' % fname
     for index in find_indexes(html, '<div class=\"reveal\">'):
         html.insert(index + 1, text)
 
 
-def tweak_html_background(html, background):
+def tweak_html_background(html, config):
     """
     TODO
     """
-    if not background.exists():
+    fname = find_style_file('style_background', config)
+    if not fname:
         return
-    text = '<section data-background="%s">' % background
+    text = '<section data-background="%s">' % fname
     for index in find_indexes(html, '<section>'):
         html[index] = html[index].replace('<section>', text)
+
+
+def tweak_html_css(html, config):
+    """
+    TODO
+    """
+    fname = find_style_file('style_custom_css', config)
+    if not fname:
+        return
+    index = find_indexes(html, 'stylesheet.*id="theme"')[0]
+    text = '<link rel="stylesheet" href="%s">' % fname
+    html.insert(index + 1, text)
+    return True
 
 
 def tweak_html(html, config):
@@ -92,10 +112,15 @@ def tweak_html(html, config):
     TODO
     """
     html = html.splitlines()
-    tweak_html_css(html, config['custom_css'])
-    tweak_html_warmup(html, Path(config['warmup']))
+    style_version = sha1(config['style'].encode('utf')).hexdigest()
+    style_path = Path('_style')
+    # TODO: footer and header could be added to the style template (i.e.:
+    #       within a config.yaml file part of the template which Markdownreveal
+    #       should be able to load and override if necessary)
     tweak_html_footer(html, config['footer'])
     tweak_html_header(html, config['header'])
-    tweak_html_logo(html, Path(config['logo']))
-    tweak_html_background(html, Path(config['background']))
+    tweak_html_warmup(html, config)
+    tweak_html_logo(html, config)
+    tweak_html_background(html, config)
+    tweak_html_css(html, config)
     return '\n'.join(html)
