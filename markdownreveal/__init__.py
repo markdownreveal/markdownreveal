@@ -23,7 +23,7 @@ from watchdog.observers.inotify_buffer import InotifyBuffer
 from .tweak import tweak_html
 
 
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 
 Config = Dict[Any, Any]
 TarMembers = List[tarfile.TarInfo]
