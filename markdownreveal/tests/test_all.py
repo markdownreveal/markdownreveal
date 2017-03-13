@@ -11,7 +11,7 @@ import pytest
 from markdownreveal import update_config
 from markdownreveal import load_config
 from markdownreveal import latest_revealjs_release
-from markdownreveal import clean_revealjs_tar_members
+from markdownreveal import clean_tar_members
 from markdownreveal import initialize_localdir
 from markdownreveal import markdown_to_reveal
 from markdownreveal.tweak import find_indexes
@@ -45,16 +45,16 @@ def test_latest_revealjs_release():
     assert all(n.isdecimal() for n in numbers)
 
 
-def test_clean_revealjs_tar_members():
+def test_clean_tar_members():
     """
-    Test `clean_revealjs_tar_members()` function.
+    Test `clean_tar_members()` function.
     """
     members = [TarInfo('toplevel'),
                TarInfo('toplevel/index.html'),
                TarInfo('toplevel/foo/bar.xyz')]
     output = [TarInfo('index.html'),
               TarInfo('foo/bar.xyz')]
-    result = clean_revealjs_tar_members(members)
+    result = clean_tar_members(members)
     assert all(x.name == y.name for x, y in zip(output, result))
 
 
@@ -67,12 +67,12 @@ def test_initialize_localdir(version, tag):
     Test `initialize_localdir()` function.
     """
     localdir = Path(mkdtemp())
-    out = initialize_localdir(localdir, version)
+    out = initialize_localdir(localdir, version, '')
     package = json.load(open(str(out / 'revealjs' / 'package.json')))
     assert package['version'] == tag
     # If version is already downloaded initialization should be pretty fast
     t0 = time.time()
-    out = initialize_localdir(localdir, version)
+    out = initialize_localdir(localdir, version, '')
     assert time.time() - t0 < 0.01
     rmtree(str(localdir))
 

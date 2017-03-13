@@ -23,7 +23,7 @@ from watchdog.observers.inotify_buffer import InotifyBuffer
 from .tweak import tweak_html
 
 
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 
 Config = Dict[Any, Any]
 TarMembers = List[tarfile.TarInfo]
@@ -145,6 +145,28 @@ def initialize_localdir(localdir: Path, reveal_version: str,
     outdir = localdir / 'out'
     outdir.mkdir(parents=True, exist_ok=True)
 
+    initialize_localdir_revealjs(outdir, localdir, reveal_version)
+    initialize_localdir_style(outdir, localdir, style_url)
+
+    return outdir
+
+
+def initialize_localdir_revealjs(outdir: Path, localdir: Path,
+                                 reveal_version: str) -> Path:
+    """
+    Initialize local directory with the required style files.
+
+    Parameters
+    ----------
+    outdir
+        Path where output files will be generated, with a symbolic link to
+        the corresponding reveal.js downloaded files.
+    localdir
+        Path to store local files.
+    reveal_version
+        String with the reveal.js version to use (i.e.: `3.0.1`). The value
+        `latest` is also allowed.
+    """
     # Download reveal.js
     reveal_path = localdir / reveal_version
     if not reveal_path.exists():
@@ -162,6 +184,22 @@ def initialize_localdir(localdir: Path, reveal_version: str,
         symlink.unlink()
     symlink.symlink_to(reveal_path, target_is_directory=True)
 
+
+def initialize_localdir_style(outdir: Path, localdir: Path,
+                              style_url: str) -> Path:
+    """
+    Initialize local directory with the required style files.
+
+    Parameters
+    ----------
+    outdir
+        Path where output files will be generated, with a symbolic link to
+        the corresponding reveal.js downloaded files.
+    localdir
+        Path to store local files.
+    style_url
+        String with the URL to download the style from.
+    """
     # Style
     symlink = outdir / '_style'
     if symlink.exists():
@@ -177,8 +215,6 @@ def initialize_localdir(localdir: Path, reveal_version: str,
             tar.extractall(str(style_path), members)
         os.remove(style_tar)
     symlink.symlink_to(style_path, target_is_directory=True)
-
-    return outdir
 
 
 def markdown_to_reveal(input_file: Path, reveal_extra: Config) -> str:

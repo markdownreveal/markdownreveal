@@ -1,6 +1,4 @@
 import re
-from hashlib import sha1
-from pathlib import Path
 from typing import List
 
 
@@ -112,8 +110,6 @@ def tweak_html(html, config):
     TODO
     """
     html = html.splitlines()
-    style_version = sha1(config['style'].encode('utf')).hexdigest()
-    style_path = Path('_style')
     # TODO: footer and header could be added to the style template (i.e.:
     #       within a config.yaml file part of the template which Markdownreveal
     #       should be able to load and override if necessary)
