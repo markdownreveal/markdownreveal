@@ -12,7 +12,7 @@
 theme: 'white'
 
 # Markdownreveal style
-style: 'https://github.com/Peque/markdownreveal-style/archive/master.tar.gz'
+style: 'https://github.com/markdownreveal/style-default/archive/master.tar.gz'
 
 # Simple footer/header HTML such as 'Name | <a href="wewbsite">website</a>'
 footer: ''

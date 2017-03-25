@@ -65,7 +65,7 @@ in there:
 - `custom.css`: your CSS rules for your own style.
 
 You can check the `Markdownreveal style repository
-<https://github.com/Peque/markdownreveal-style>`_ to get an idea on how to
+<https://github.com/markdownreveal/style-default>`_ to get an idea on how to
 create the CSS file. Note that your custom style will be based on reveal.js's
 `white` theme.
 
@@ -79,12 +79,12 @@ Using your style repository
 If you are doing many presentation, or if you work for a company, you may
 find it useful to create your own style repository. Simply upload your files
 to a repository, as `we do ourselves with Markdownreveal
-<https://github.com/Peque/markdownreveal-style>`_ and then edit your
+<https://github.com/markdownreveal/style-default>`_ and then edit your
 `config.yaml` file:
 
 .. code-block:: bash
 
-    style: 'https://github.com/Peque/markdownreveal-style/archive/master.tar.gz'
+    style: 'https://github.com/markdownreveal/style-default/archive/master.tar.gz'
 
 Put there an URL pointing to your style files. Note that they need to be
 contained in a `tar.gz` file.

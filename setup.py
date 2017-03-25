@@ -18,7 +18,7 @@ setup(
         presentations with simple Markdown notation. It is based on
         reveal.js and is able to generate the required HTML and refresh
         your browser view for easier and faster presentation creation.''',
-    url='https://github.com/peque/markdownreveal',
+    url='https://github.com/markdownreveal/markdownreveal',
     author='Miguel Sánchez de León Peque',
     author_email='peeque@neosit.es',
     license='BSD License',
