@@ -27,7 +27,7 @@ def find_style_file(filename, config):
     outpath = config['local_path'] / 'out'
     filepath = outpath / config['style_path'] / config[filename]
     if not filepath.exists():
-        filepath = outpath / '_style' / config[filename]
+        filepath = outpath / 'markdownrevealstyle' / config[filename]
     if not filepath.exists():
         return
     return filepath.relative_to(filepath.parents[1])

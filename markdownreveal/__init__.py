@@ -201,7 +201,7 @@ def initialize_localdir_style(outdir: Path, localdir: Path,
         String with the URL to download the style from.
     """
     # Style
-    symlink = outdir / '_style'
+    symlink = outdir / 'markdownrevealstyle'
     if symlink.exists():
         symlink.unlink()
     if not style_url:
@@ -267,7 +267,7 @@ def generate(markdown_file):
         'rsync',
         '--delete',
         '--exclude', 'revealjs',
-        '--exclude', '_style',
+        '--exclude', 'markdownrevealstyle',
         '--exclude', '.git',
         '-av',
         '%s/' % markdown_file.resolve().parent,
