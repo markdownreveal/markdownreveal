@@ -21,7 +21,7 @@ from watchdog.observers.inotify_buffer import InotifyBuffer
 from .tweak import tweak_html
 
 
-__version__ = '0.0.6'
+__version__ = '0.0.7'
 
 Config = Dict[Any, Any]
 TarMembers = List[tarfile.TarInfo]
@@ -252,9 +252,9 @@ def generate(markdown_file):
     config = load_config()
 
     # Initialize localdir
-    reveal_path = initialize_localdir(config['local_path'],
-                                      config['reveal_version'],
-                                      config['style'])
+    initialize_localdir(config['local_path'],
+                        config['reveal_version'],
+                        config['style'])
 
     # rsync
     command = [
