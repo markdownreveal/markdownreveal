@@ -32,7 +32,11 @@ setup(
         'Programming Language :: Python :: Implementation :: CPython',
     ],
     keywords='markdown reveal reveal.js presentation',
-    scripts=['bin/markdownreveal'],
+    entry_points={
+        'console_scripts': [
+            'markdownreveal = markdownreveal.commands:cli',
+        ],
+    },
     packages=['markdownreveal'],
     package_data={'markdownreveal': ['config.template.yaml']},
     install_requires=[
@@ -41,7 +45,8 @@ setup(
         'pypandoc',
         'livereload',
         'watchdog',
-        'click'],
+        'click',
+        'click_default_group'],
     extras_require={
         'dev': [],
         'test': ['tox'],

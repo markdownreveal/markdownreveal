@@ -15,9 +15,7 @@ from typing import Dict
 import yaml
 import requests
 from pypandoc import convert_file
-from livereload import Server
 from watchdog.events import FileSystemEventHandler
-from watchdog.observers import Observer
 from watchdog.observers.inotify_buffer import InotifyBuffer
 
 from .tweak import tweak_html
@@ -69,12 +67,10 @@ def load_config() -> Config:
     config = yaml.load(open(config_template))
     config_file = Path('config.yaml')
     if config_file.exists():
-        print('loading configuration file...')
         update_config(config, yaml.load(open(config_file)))
     config['local_path'] = Path.home() / config['local_path']
     config['output_path'] = config['local_path'] / 'out'
     config['reveal_extra']['theme'] = config['theme']
-    print(config.items())
     return config
 
 
@@ -254,13 +250,11 @@ def generate(markdown_file):
     """
     # Reload config
     config = load_config()
-    print('Configuration: ', config)
 
     # Initialize localdir
     reveal_path = initialize_localdir(config['local_path'],
                                       config['reveal_version'],
                                       config['style'])
-    print('Using reveal.js found in %s' % reveal_path)
 
     # rsync
     command = [
@@ -276,7 +270,6 @@ def generate(markdown_file):
     check_output(command)
 
     # Convert from markdown
-    print('Converting to markdown...')
     output = markdown_to_reveal(markdown_file,
                                 reveal_extra=config['reveal_extra'])
 
@@ -284,11 +277,10 @@ def generate(markdown_file):
     output = tweak_html(output, config)
 
     # Write index.html
-    print('Writing index.html...')
     index = config['output_path'] / 'index.html'
     index.write_text(output)
 
-    print('Reloading...')
+    # Reload view
     with open(config['output_path'] / '.reload', 'a') as f:
         f.write('x\n')
 
@@ -305,7 +297,6 @@ class Handler(FileSystemEventHandler):
         self.set_timer()
 
     def on_any_event(self, event):
-        print(event)
         if self.timer.is_alive():
             return
         self.set_timer()
@@ -313,30 +304,3 @@ class Handler(FileSystemEventHandler):
 
     def set_timer(self):
         self.timer = Timer(self.period, generate, args=(self.markdown_file,))
-
-
-def run(markdown_file):
-    """
-    TODO
-    """
-    markdown_file = Path(markdown_file)
-
-    observer = Observer()
-    handler = Handler(markdown_file)
-    # Initial generation
-    generate(markdown_file)
-    observer.schedule(handler, '.', recursive=True)
-    observer.start()
-
-    server = Server()
-    config = load_config()
-    server.watch(str(config['output_path'] / '.reload'), delay=0)
-    server.serve(
-        root=config['output_path'],
-        restart_delay=0,
-        debug=True,
-        open_url=True,
-        open_url_delay=0,
-        host='localhost',
-        port=8123,
-    )

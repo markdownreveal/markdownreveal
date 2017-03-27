@@ -25,6 +25,7 @@ Contents
    :maxdepth: 2
 
    usage.rst
+   subcommands.rst
    style.rst
    developers.rst
    license.rst
