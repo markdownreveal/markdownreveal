@@ -36,9 +36,27 @@ it to a server, you can use the ``zip`` subcommand:
    markdownreveal zip presentation.md
 
 This will create a ZIP file containing your presentation. Note that the
-presentation is a static webpage, so in order to open it you just need to
-double-click on ``index.html`` and you can easily upload it to your own server
-if that is what you need.
+presentation is a static webpage, so in order to view it you just need to open
+``index.html`` with your web browser. You can also upload it to your own server
+if you prefer so.
+
+
+.. index:: github, pages
+
+GitHub pages
+============
+
+If you happen to be using GitHub to host your presentation code, then sharing
+could not be simpler. You can use the subcommand ``upload`` to upload your
+presentation to GitHub pages:
+
+.. code-block:: bash
+
+   markdownreveal upload presentation.md
+
+.. warning:: Note that executing this command will reset the branch
+   ``gh-pages``, so make sure your repository holds your presentation only or
+   you are not using that branch.
 
 
 .. index:: clean, local
