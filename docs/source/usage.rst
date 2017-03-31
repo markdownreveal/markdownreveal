@@ -155,5 +155,11 @@ Images (with optional width):
 
     ![Alt text](./figures/yourfigure.png){width=70%}
 
+Equations (using LaTeX notation):
+
+.. code-block:: bash
+
+    $$ c = \sqrt{a^2 + b^2} $$
+
 For more information, refer to the
 `official documentation <http://pandoc.org/MANUAL.html#pandocs-markdown>`_.

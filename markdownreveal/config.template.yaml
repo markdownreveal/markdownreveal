@@ -18,6 +18,10 @@ style: 'https://github.com/markdownreveal/style-default/archive/master.tar.gz'
 footer: ''
 header: ''
 
+# Math renderer plugin
+katex: on
+katex_version: 'latest'
+
 
 #########################
 # Reveal.js configuration

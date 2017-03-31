@@ -21,7 +21,7 @@ from watchdog.observers.inotify_buffer import InotifyBuffer
 from .tweak import tweak_html
 
 
-__version__ = '0.0.8'
+__version__ = '0.0.9'
 
 Config = Dict[Any, Any]
 TarMembers = List[tarfile.TarInfo]
@@ -74,11 +74,20 @@ def load_config() -> Config:
     return config
 
 
-def latest_revealjs_release() -> str:
+def latest_project_release(github: str) -> str:
     """
-    Fetch the latest reveal.js release tag.
+    Fetch the latest project release tag.
+
+    Parameters
+    ----------
+    github
+        The name of the GitHub project.
+
+    Notes
+    -----
+    For now, only GitHub projects are supported.
     """
-    releases = 'https://api.github.com/repos/hakimel/reveal.js/releases'
+    releases = 'https://api.github.com/repos/%s/releases' % github
     response = requests.get(releases)
     # Try with GitHub API first
     if response.status_code == 200:
@@ -117,68 +126,97 @@ def clean_tar_members(members: TarMembers) -> TarMembers:
     return clean
 
 
-def initialize_localdir(localdir: Path, reveal_version: str,
-                        style_url: str) -> Path:
+def initialize_localdir(config: Config) -> Path:
     """
     Initialize local directory with the required reveal.js files.
 
     Parameters
     ----------
-    localdir
-        Path to store local files.
-    reveal_version
-        String with the reveal.js version to use (i.e.: `3.0.1`). The value
-        `latest` is also allowed.
-    style_url
-        String with the URL to download the style from.
+    config
+        Markdownreveal configuration.
 
     Returns
     -------
         Path where output files will be generated, with a symbolic link to
         the corresponding reveal.js downloaded files.
     """
+    localdir = config['local_path']
+
     # Initialize local directory
     outdir = localdir / 'out'
     outdir.mkdir(parents=True, exist_ok=True)
 
-    initialize_localdir_revealjs(outdir, localdir, reveal_version)
-    initialize_localdir_style(outdir, localdir, style_url)
+    # reveal.js
+    initialize_localdir_project(
+        github='hakimel/reveal.js',
+        outdir=outdir,
+        localdir=localdir,
+        project_version=config['reveal_version'],
+        name='revealjs',
+        download_url='https://github.com/{project}/archive/{version}.tar.gz'
+    )
+
+    # KaTeX
+    initialize_localdir_project(
+        github='Khan/KaTeX',
+        outdir=outdir,
+        localdir=localdir,
+        project_version=config['katex_version'],
+        name='katex',
+        download_url='https://github.com/{project}/' +
+                     'releases/download/{version}/katex.tar.gz'
+    )
+
+    # Style
+    initialize_localdir_style(outdir, localdir, config['style'])
 
     return outdir
 
 
-def initialize_localdir_revealjs(outdir: Path, localdir: Path,
-                                 reveal_version: str) -> Path:
+def initialize_localdir_project(github: str, outdir: Path, localdir: Path,
+                                project_version: str, name: str,
+                                download_url: str) -> Path:
     """
-    Initialize local directory with the required style files.
+    Initialize local directory with the specified project.
 
     Parameters
     ----------
+    github
+        The name of the GitHub project.
     outdir
         Path where output files will be generated, with a symbolic link to
-        the corresponding reveal.js downloaded files.
+        the corresponding project downloaded files.
     localdir
         Path to store local files.
-    reveal_version
-        String with the reveal.js version to use (i.e.: `3.0.1`). The value
+    project_version
+        String with the project version to use (i.e.: `3.0.1`). The value
         `latest` is also allowed.
+    name
+        A name for the local downloaded project.
+    download_url
+        URL to download the project from. In example:
+        `'https://github.com/{project}/archive/{version}.tar.gz'`
+
+    Notes
+    -----
+    For now, only GitHub projects are supported.
     """
-    # Download reveal.js
-    reveal_path = localdir / reveal_version
-    if not reveal_path.exists():
-        if reveal_version == 'latest':
-            reveal_version = latest_revealjs_release()
-        url = 'https://github.com/hakimel/reveal.js/archive/%s.tar.gz'
-        url = url % reveal_version
-        reveal_tar, headers = urlretrieve(url)
+    # Download project
+    project_path = localdir / name / project_version
+    if not project_path.exists():
+        if project_version == 'latest':
+            project_version = latest_project_release(github=github)
+        download_url = download_url.format(project=github,
+                                           version=project_version)
+        reveal_tar, headers = urlretrieve(download_url)
         with tarfile.open(reveal_tar) as tar:
             members = clean_tar_members(tar.getmembers())
-            tar.extractall(str(reveal_path), members)
+            tar.extractall(str(project_path), members)
         os.remove(reveal_tar)
-    symlink = outdir / 'revealjs'
+    symlink = outdir / name
     if symlink.exists():
         symlink.unlink()
-    symlink.symlink_to(reveal_path, target_is_directory=True)
+    symlink.symlink_to(project_path, target_is_directory=True)
 
 
 def initialize_localdir_style(outdir: Path, localdir: Path,
@@ -252,14 +290,13 @@ def generate(markdown_file):
     config = load_config()
 
     # Initialize localdir
-    initialize_localdir(config['local_path'],
-                        config['reveal_version'],
-                        config['style'])
+    initialize_localdir(config)
 
     # rsync
     command = [
         'rsync',
         '--delete',
+        '--exclude', 'katex',
         '--exclude', 'revealjs',
         '--exclude', 'markdownrevealstyle',
         '--exclude', '.git',
