@@ -59,6 +59,41 @@ presentation to GitHub pages:
    you are not using that branch.
 
 
+.. index:: export, pdf
+
+Export to PDF
+=============
+
+You can also export your presentation to PDF. This functionality, however,
+requires `Docker <https://www.docker.com/>`_, so you need to have it installed
+and configured in your system.
+
+In order to export your presentation to PDF, use the ``pdf`` subcommand and
+provide the URL where your presentation is being served (either the server
+where you uploaded it or the local server that is spawned when you run
+Markdownreveal locally and the presentation is opened in your browser:
+
+.. code-block:: bash
+
+   markdownreveal pdf http://localhost:8123/#/
+
+A PDF file will be created in the current directory with the presentation.
+
+.. note:: Docker was chosen for convenience and security. Exporting the
+   presentation to PDF requires tools that otherwise would need to be
+   installed as binaries (insecure) or compiled (inconvenient).
+
+   Currently the export process uses
+   `DeckTape <https://github.com/astefanutti/decktape>`_ and a patched
+   `PhantomJS <https://github.com/ariya/phantomjs>`_ version. If, at some
+   point, DeckTape is able to work with a non-patched PhantomJS version, we
+   may consider adding support for export without Docker.
+
+   For exporting the presentation, Docker is given access only to a temporary
+   folder where it can write the PDF output. Then Markdownreveal copies this
+   file to the current directory once the export is finished.
+
+
 .. index:: clean, local
 
 Clean local files

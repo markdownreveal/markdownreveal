@@ -1,12 +1,17 @@
+import os
 import sys
 import shlex
+from subprocess import run
 from subprocess import check_output
 from subprocess import CalledProcessError
 from tempfile import TemporaryDirectory
 from pathlib import Path
-from shutil import make_archive
 from shutil import copytree
+from shutil import make_archive
+from shutil import move
 from shutil import rmtree
+from urllib import request
+from urllib.error import URLError
 
 import click
 from click_default_group import DefaultGroup
@@ -112,6 +117,37 @@ def zip(markdown_file: Path):
         config = load_config()
         copytree(src=config['output_path'], dst=tmpdir)
         make_archive(markdown_file.stem, format='zip', root_dir=tmpdir)
+
+
+@cli.command()
+@click.argument('url')
+def pdf(url: str):
+    """
+    Generate a PDF file with the presentation.
+    """
+    try:
+        code = request.urlopen(url).getcode()
+    except URLError:
+        raise ValueError('Invalid URL provided!')
+
+    if code != 200:
+        raise ValueError('Unexpected server response!')
+
+    with TemporaryDirectory() as tmpdir:
+        name = 'slides.pdf'
+        tmpdir = Path(tmpdir)
+        command = 'docker run --user={uid}:{gid} --rm --net="host" ' + \
+                  '-v {tmp}:{tmp}:Z -w {tmp} astefanutti/decktape ' + \
+                  '{url} {name}'
+        command = command.format(
+            uid=os.getuid(),
+            gid=os.getgid(),
+            tmp=tmpdir,
+            url=url,
+            name=name,
+        )
+        run(shlex.split(command))
+        move(str(tmpdir/name), str(Path.cwd()))
 
 
 @cli.command()

@@ -13,10 +13,12 @@ Requirements
 
 In order to use Markdown reveal you need:
 
-- `Pandoc <https://pandoc.org/>`_ installed in your system.
-- A Python 3.5 (or higher) interpreter.
-- Permissions to install the package with `pip`.
-- Internet access.
+- Python 3.5 (or higher).
+- `Pandoc <https://pandoc.org/>`_.
+
+And optionally:
+
+- Docker (for exporting to PDF).
 
 .. note:: Windows and Mac platforms are theoretically supported, but not
    currently tested by developers. For those platforms you may not even need
