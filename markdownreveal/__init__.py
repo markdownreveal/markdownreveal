@@ -93,9 +93,9 @@ def latest_project_release(github: str) -> str:
     if response.status_code == 200:
         return response.json()[0]['tag_name']
     # Try to parse latest release manually...
-    response = requests.get('https://github.com/hakimel/reveal.js/releases')
-    return re.findall('/hakimel/reveal.js/releases/tag/([^"]*)',
-                      response.text)[0]
+    response = requests.get('https://github.com/%s/releases' % github)
+    return re.findall('/%s/releases/tag/([^"]*)' % github,
+                      response.text, flags=re.IGNORECASE)[0]
 
 
 def clean_tar_members(members: TarMembers) -> TarMembers:
