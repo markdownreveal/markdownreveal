@@ -21,7 +21,7 @@ from watchdog.observers.inotify_buffer import InotifyBuffer
 from .tweak import tweak_html
 
 
-__version__ = '0.0.10'
+__version__ = '0.1.0'
 
 Config = Dict[Any, Any]
 TarMembers = List[tarfile.TarInfo]
@@ -55,6 +55,27 @@ def update_config(template: Config, config: Config) -> Config:
     return template
 
 
+def complete_config(config: Config) -> Config:
+    """
+    Complete configuration with complete paths and parameters.
+
+    Parameters
+    ----------
+    config
+        Input configuration.
+
+    Returns
+    -------
+        The completed configuration.
+    """
+    # Allow changing home path through environment variable (for testing)
+    home = Path(os.environ.get('MARKDOWNREVEAL_HOME', str(Path.home())))
+    config['local_path'] = home / config['local_path']
+    config['output_path'] = config['local_path'] / 'out'
+    config['reveal_extra']['theme'] = config['theme']
+    return config
+
+
 def load_config() -> Config:
     """
     Load configuration file template.
@@ -63,14 +84,30 @@ def load_config() -> Config:
     -------
         The configuration file template.
     """
+    # Default Markdownreveal configuration
     config_template = resource_filename(__name__, 'config.template.yaml')
     config = yaml.load(open(config_template))
+
+    # Local configuration (load first for style path)
+    local_config = {}
     config_file = Path('config.yaml')
     if config_file.exists():
-        update_config(config, yaml.load(open(config_file)))
-    config['local_path'] = Path.home() / config['local_path']
-    config['output_path'] = config['local_path'] / 'out'
-    config['reveal_extra']['theme'] = config['theme']
+        local_config = yaml.load(config_file.read_text())
+        update_config(config, local_config)
+    complete_config(config)
+
+    # Style configuration
+    style_config = {}
+    config_file = config['output_path'] / 'markdownrevealstyle' / 'config.yaml'
+    if config_file.exists():
+        style_config = yaml.load(config_file.read_text())
+        update_config(config, style_config)
+    complete_config(config)
+
+    # Local configuration (override style configuration)
+    update_config(config, local_config)
+    complete_config(config)
+
     return config
 
 

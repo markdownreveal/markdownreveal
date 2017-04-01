@@ -63,6 +63,7 @@ in there:
 - `logo.svg`: a logo to display on your slides on a corner.
 - `warmup.svg`: an image to be displayed before the presentation title.
 - `custom.css`: your CSS rules for your own style.
+- `config.yaml`: to tune the style default configuration (footer, header...).
 
 You can check the `Markdownreveal style repository
 <https://github.com/markdownreveal/style-default>`_ to get an idea on how to
