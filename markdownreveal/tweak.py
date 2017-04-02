@@ -105,25 +105,6 @@ def tweak_html_css(html, config):
     return True
 
 
-def tweak_html_katex(html):
-    """
-    TODO
-    """
-    index = find_indexes(html, '</head>')[-1]
-    text = '''
-        <link rel="stylesheet" href="katex/katex.min.css">
-        <script src="katex/katex.min.js"></script>
-        <script src="katex/contrib/auto-render.min.js"></script>
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-              renderMathInElement(document.body);
-            });
-        </script>
-    '''
-    html.insert(index, text)
-    return True
-
-
 def tweak_html(html, config):
     """
     TODO
@@ -138,6 +119,4 @@ def tweak_html(html, config):
     tweak_html_logo(html, config)
     tweak_html_background(html, config)
     tweak_html_css(html, config)
-    if config['katex']:
-        tweak_html_katex(html)
     return '\n'.join(html)

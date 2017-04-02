@@ -202,7 +202,7 @@ Once upon a time...
 - there were
 - some small worms
     ''')
-    html = markdown_to_reveal(tmp, {})
+    html = markdown_to_reveal(tmp, reveal_extra={}, katex=True)
     assert '<p>Once upon a time...</p>' in html
     assert '<li>there were</li>' in html
     tmp.unlink()

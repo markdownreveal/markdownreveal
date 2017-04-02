@@ -161,7 +161,15 @@ Equations (using LaTeX notation):
 
 .. code-block:: bash
 
-    $$ c = \sqrt{a^2 + b^2} $$
+    $$
+    f(x) = \int_{-\infty}^\infty h(\xi)\,e^{2 \pi i \xi x} \,d\xi
+    $$
+
+Also inline equations (using LaTeX notation):
+
+.. code-block:: bash
+
+    Inline equation: $c = \sqrt{a^2 + b^2}$
 
 For more information, refer to the
 `official documentation <http://pandoc.org/MANUAL.html#pandocs-markdown>`_.

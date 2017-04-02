@@ -21,7 +21,7 @@ from watchdog.observers.inotify_buffer import InotifyBuffer
 from .tweak import tweak_html
 
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 Config = Dict[Any, Any]
 TarMembers = List[tarfile.TarInfo]
@@ -288,7 +288,8 @@ def initialize_localdir_style(outdir: Path, localdir: Path,
     symlink.symlink_to(style_path, target_is_directory=True)
 
 
-def markdown_to_reveal(input_file: Path, reveal_extra: Config) -> str:
+def markdown_to_reveal(input_file: Path, reveal_extra: Config,
+                       katex: bool) -> str:
     """
     Transform a Markdown input file to an HTML (reveal.js) output string.
 
@@ -298,6 +299,8 @@ def markdown_to_reveal(input_file: Path, reveal_extra: Config) -> str:
         Input file path, containing the Markdown code.
     reveal_extra
         Extra configuration parameters for reveal.js.
+    katex
+        Whether to use KaTeX for math rendering.
 
     Returns
     -------
@@ -308,6 +311,11 @@ def markdown_to_reveal(input_file: Path, reveal_extra: Config) -> str:
         '--slide-level=2',
         '-V', 'revealjs-url=revealjs',
     ]
+    if katex:
+        extra_args.extend([
+            '--katex=katex/katex.min.js',
+            '--katex-stylesheet=katex/katex.min.css',
+        ])
     for key, value in reveal_extra.items():
         extra_args.extend(['-V', '%s=%s' % (key, value)])
     output = convert_file(
@@ -345,7 +353,8 @@ def generate(markdown_file):
 
     # Convert from markdown
     output = markdown_to_reveal(markdown_file,
-                                reveal_extra=config['reveal_extra'])
+                                reveal_extra=config['reveal_extra'],
+                                katex=config['katex'])
 
     # HTML substitution
     output = tweak_html(output, config)
