@@ -34,6 +34,7 @@ setup(
     keywords='markdown reveal reveal.js presentation',
     entry_points={
         'console_scripts': [
+            'mdr = markdownreveal.commands:cli',
             'markdownreveal = markdownreveal.commands:cli',
         ],
     },
