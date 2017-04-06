@@ -54,7 +54,7 @@ def show(markdown_file: Path):
     config = load_config()
     server.watch(str(config['output_path'] / '.reload'), delay=0)
     server.serve(
-        root=config['output_path'],
+        root=str(config['output_path']),
         restart_delay=0,
         debug=True,
         open_url=True,
@@ -87,7 +87,7 @@ def upload(markdown_file: Path):
         tmpdir = Path(tmpdir) / 'out'
         generate(markdown_file)
         config = load_config()
-        copytree(src=config['output_path'], dst=tmpdir)
+        copytree(src=str(config['output_path']), dst=str(tmpdir))
 
         worktree = '--work-tree=%s' % tmpdir
         current = shell('git rev-parse --abbrev-ref HEAD')[0]
@@ -115,8 +115,8 @@ def zip(markdown_file: Path):
         tmpdir = Path(tmpdir) / 'out'
         generate(markdown_file)
         config = load_config()
-        copytree(src=config['output_path'], dst=tmpdir)
-        make_archive(markdown_file.stem, format='zip', root_dir=tmpdir)
+        copytree(src=str(config['output_path']), dst=str(tmpdir))
+        make_archive(markdown_file.stem, format='zip', root_dir=str(tmpdir))
 
 
 @cli.command()
