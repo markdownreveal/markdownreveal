@@ -30,7 +30,7 @@ def shell(command):
     return check_output(shlex.split(command)).decode('utf').splitlines()
 
 
-@click.group(cls=DefaultGroup, default='show', default_if_no_args=True)
+@click.group(cls=DefaultGroup, default='show')
 def cli():
     pass
 
