@@ -364,7 +364,7 @@ def generate(markdown_file):
     index.write_text(output)
 
     # Reload view
-    with open(config['output_path'] / '.reload', 'a') as f:
+    with open(str(config['output_path'] / '.reload'), 'a') as f:
         f.write('x\n')
 
 
