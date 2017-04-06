@@ -1,6 +1,7 @@
 import json
 import os
 import time
+from os.path import dirname
 from pathlib import Path
 from tarfile import TarInfo
 from tempfile import mkdtemp
@@ -16,6 +17,7 @@ from markdownreveal import latest_project_release
 from markdownreveal import clean_tar_members
 from markdownreveal import initialize_localdir
 from markdownreveal import markdown_to_reveal
+from markdownreveal import generate
 from markdownreveal.tweak import find_indexes
 
 
@@ -206,3 +208,11 @@ Once upon a time...
     assert '<p>Once upon a time...</p>' in html
     assert '<li>there were</li>' in html
     tmp.unlink()
+
+
+def test_generate():
+    """
+    Test `generate()` function.
+    """
+    markdown_file = Path(dirname(__file__), 'resources', 'presentation.md')
+    generate(markdown_file)
