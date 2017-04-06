@@ -1,18 +1,13 @@
 """
 Setup module.
 """
-import re
-from os.path import join as pjoin
 from setuptools import setup
+from markdownreveal import __version__
 
-
-with open(pjoin('markdownreveal', '__init__.py')) as f:
-    line = next(l for l in f if l.startswith('__version__'))
-    version = re.match('__version__ = [\'"]([^\'"]+)[\'"]', line).group(1)
 
 setup(
     name='markdownreveal',
-    version=version,
+    version=__version__,
     description='Create presentations with simple Markdown notation',
     long_description='''This tool allows you to create and visualize
         presentations with simple Markdown notation. It is based on

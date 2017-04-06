@@ -18,9 +18,9 @@ from click_default_group import DefaultGroup
 from livereload import Server
 from watchdog.observers import Observer
 
-from . import Handler
-from . import generate
-from . import load_config
+from .convert import Handler
+from .convert import generate
+from .config import load_config
 
 
 def shell(command):
