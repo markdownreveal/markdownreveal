@@ -31,6 +31,7 @@ def shell(command):
 
 
 @click.group(cls=DefaultGroup, default='show')
+@click.version_option()
 def cli():
     pass
 
