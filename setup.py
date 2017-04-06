@@ -20,7 +20,7 @@ setup(
         your browser view for easier and faster presentation creation.''',
     url='https://github.com/markdownreveal/markdownreveal',
     author='Miguel Sánchez de León Peque',
-    author_email='peeque@neosit.es',
+    author_email='peque@neosit.es',
     license='BSD License',
     classifiers=[
         'Development Status :: 3 - Alpha',
