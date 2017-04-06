@@ -157,4 +157,4 @@ def clean():
     Clean local Markdownreveal files.
     """
     config = load_config()
-    rmtree(config['local_path'], ignore_errors=True)
+    rmtree(str(config['local_path']), ignore_errors=True)
