@@ -22,6 +22,8 @@ header: ''
 katex: on
 katex_version: 'latest'
 
+# Emoji rendering
+emoji_codes: on
 
 #########################
 # Reveal.js configuration

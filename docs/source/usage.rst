@@ -171,5 +171,11 @@ Also inline equations (using LaTeX notation):
 
     Inline equation: $c = \sqrt{a^2 + b^2}$
 
+You may also use Emoji codes!
+
+.. code-block:: bash
+
+    Markdownreveal... :heart_eyes:
+
 For more information, refer to the
 `official documentation <http://pandoc.org/MANUAL.html#pandocs-markdown>`_.
