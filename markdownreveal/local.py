@@ -26,9 +26,6 @@ def latest_project_release(github: str) -> str:
     """
     releases = 'https://api.github.com/repos/%s/releases' % github
     response = requests.get(releases)
-    # Try with GitHub API first
-    if response.status_code == 200:
-        return response.json()[0]['tag_name']
     # Try to parse latest release manually...
     response = requests.get('https://github.com/%s/releases' % github)
     return re.findall('/%s/releases/tag/([^"]*)' % github,
@@ -52,7 +49,7 @@ def clean_tar_members(members: TarMembers) -> TarMembers:
     for member in members:
         path = Path(member.name)
         if path.is_absolute():
-            continue
+            raise NotImplementedError('Please, report this unexpected error!')
         parts = path.parts[1:]
         if not parts:
             continue
@@ -61,53 +58,6 @@ def clean_tar_members(members: TarMembers) -> TarMembers:
         member.name = str(Path(*parts))
         clean.append(member)
     return clean
-
-
-def initialize_localdir(config: Config) -> Path:
-    """
-    Initialize local directory with the required reveal.js files.
-
-    Parameters
-    ----------
-    config
-        Markdownreveal configuration.
-
-    Returns
-    -------
-        Path where output files will be generated, with a symbolic link to
-        the corresponding reveal.js downloaded files.
-    """
-    localdir = config['local_path']
-
-    # Initialize local directory
-    outdir = localdir / 'out'
-    outdir.mkdir(parents=True, exist_ok=True)
-
-    # reveal.js
-    initialize_localdir_project(
-        github='hakimel/reveal.js',
-        outdir=outdir,
-        localdir=localdir,
-        project_version=config['reveal_version'],
-        name='revealjs',
-        download_url='https://github.com/{project}/archive/{version}.tar.gz'
-    )
-
-    # KaTeX
-    initialize_localdir_project(
-        github='Khan/KaTeX',
-        outdir=outdir,
-        localdir=localdir,
-        project_version=config['katex_version'],
-        name='katex',
-        download_url='https://github.com/{project}/' +
-                     'releases/download/{version}/katex.tar.gz'
-    )
-
-    # Style
-    initialize_localdir_style(outdir, localdir, config['style'])
-
-    return outdir
 
 
 def initialize_localdir_project(github: str, outdir: Path, localdir: Path,
@@ -186,3 +136,50 @@ def initialize_localdir_style(outdir: Path, localdir: Path,
             tar.extractall(str(style_path), members)
         os.remove(style_tar)
     symlink.symlink_to(style_path, target_is_directory=True)
+
+
+def initialize_localdir(config: Config) -> Path:
+    """
+    Initialize local directory with the required reveal.js files.
+
+    Parameters
+    ----------
+    config
+        Markdownreveal configuration.
+
+    Returns
+    -------
+        Path where output files will be generated, with a symbolic link to
+        the corresponding reveal.js downloaded files.
+    """
+    localdir = config['local_path']
+
+    # Initialize local directory
+    outdir = localdir / 'out'
+    outdir.mkdir(parents=True, exist_ok=True)
+
+    # reveal.js
+    initialize_localdir_project(
+        github='hakimel/reveal.js',
+        outdir=outdir,
+        localdir=localdir,
+        project_version=config['reveal_version'],
+        name='revealjs',
+        download_url='https://github.com/{project}/archive/{version}.tar.gz'
+    )
+
+    # KaTeX
+    initialize_localdir_project(
+        github='Khan/KaTeX',
+        outdir=outdir,
+        localdir=localdir,
+        project_version=config['katex_version'],
+        name='katex',
+        download_url='https://github.com/{project}/' +
+                     'releases/download/{version}/katex.tar.gz'
+    )
+
+    # Style
+    initialize_localdir_style(outdir, localdir, config['style'])
+
+    return outdir

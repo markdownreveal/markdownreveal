@@ -3,6 +3,7 @@ Markdownreveal local module tests.
 """
 import json
 import time
+from hashlib import sha1
 from pathlib import Path
 from tarfile import TarInfo
 from tempfile import mkdtemp
@@ -47,23 +48,26 @@ def test_clean_tar_members():
 
 
 @pytest.mark.parametrize(
-    'reveal_version,katex_version,reveal_tag,katex_tag', [
+    'reveal_version,katex_version,reveal_tag,katex_tag,style', [
         (
             'latest',
             'latest',
             latest_project_release(github='hakimel/reveal.js'),
-            latest_project_release(github='khan/katex')
+            latest_project_release(github='khan/katex'),
+            '',
         ),
         (
             '3.4.0',
             'v0.7.1',
             '3.4.0',
-            'v0.7.1'
+            'v0.7.1',
+            'https://github.com/markdownreveal/style-default/' +
+            'archive/master.tar.gz',
         ),
     ]
 )
 def test_initialize_localdir(reveal_version, katex_version, reveal_tag,
-                             katex_tag):
+                             katex_tag, style):
     """
     Test `initialize_localdir()` function.
     """
@@ -72,13 +76,20 @@ def test_initialize_localdir(reveal_version, katex_version, reveal_tag,
         'local_path': localdir,
         'reveal_version': reveal_version,
         'katex_version': katex_version,
-        'style': '',
+        'style': style,
     }
     out = initialize_localdir(config)
     package = json.load(open(str(out / 'revealjs' / 'package.json')))
     assert package['version'] == reveal_tag
     katex_readme = out / 'katex' / 'README.md'
     assert katex_tag[1:] in katex_readme.read_text()
+    style_out = out / 'markdownrevealstyle'
+    if style:
+        style_dir = localdir / sha1(style.encode('utf')).hexdigest()
+        assert style_dir.exists()
+        assert style_out.exists()
+    else:
+        assert not style_out.exists()
     # If version is already downloaded initialization should be pretty fast
     t0 = time.time()
     out = initialize_localdir(config)
