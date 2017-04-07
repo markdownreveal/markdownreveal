@@ -27,8 +27,9 @@ You can also have a look at our
    image:: https://api.travis-ci.org/markdownreveal/markdownreveal.svg?branch=master
       :target: https://travis-ci.org/markdownreveal/markdownreveal
 .. |documentation_status|
-   image:: https://readthedocs.org/projects/markdownreveal/badge/
+   image:: https://readthedocs.org/projects/markdownreveal/badge/?version=stable
       :target: https://markdownreveal.readthedocs.io/
+      :alt: Documentation badge
 .. |codecov| image:: https://codecov.io/github/markdownreveal/markdownreveal/coverage.svg?branch=master
    :target: https://codecov.io/github/markdownreveal/markdownreveal
    :alt: Coverage (codecov) badge
