@@ -31,7 +31,10 @@ def shell(command):
 
 
 @click.group(cls=DefaultGroup, default='show')
-@click.version_option()
+@click.version_option(
+    prog_name='Markdownreveal',
+    message='%(prog)s %(version)s'
+)
 def cli():
     pass
 
