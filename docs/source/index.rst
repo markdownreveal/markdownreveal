@@ -13,9 +13,11 @@ Markdown notation. It is based on reveal.js and is able to generate the
 required HTML and refresh your browser view for easier and faster
 presentation creation.
 
-You can also have a look at our
-`online presentation example <https://markdownreveal.github.io/example/>`_ and
-`its corresponding source code <https://github.com/markdownreveal/example>`_.
+- `Online presentation example <https://markdownreveal.github.io/example/>`_ 
+  (`source code <https://github.com/markdownreveal/example>`_).
+- `Markdownreveal on Pypi <https://pypi.python.org/pypi/markdownreveal>`_.
+- `Source code on Github <https://github.com/markdownreveal/markdownreveal>`_.
+- :doc:`license`.
 
 
 Contents
