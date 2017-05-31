@@ -41,7 +41,11 @@ def cli():
 
 @cli.command()
 @click.argument('markdown_file')
-def show(markdown_file: Path):
+@click.option('-h', '--host', type=str, default='localhost',
+              help='Listen on IP (default: localhost).')
+@click.option('-p', '--port', type=int, default=8123,
+              help='Listen on port (default: 8123).')
+def show(markdown_file: Path, host: str='localhost', port: int=8123):
     """
     Visualize your presentation (default).
     """
@@ -63,8 +67,8 @@ def show(markdown_file: Path):
         debug=True,
         open_url=True,
         open_url_delay=0,
-        host='localhost',
-        port=8123,
+        host=host,
+        port=port,
     )
 
 
