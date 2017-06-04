@@ -74,6 +74,10 @@ Now, while ``markdownreveal`` is running, edit your ``presentation.md`` file
 and save the changes. Markdownreveal will automatically refresh your browser
 view for you!
 
+.. note:: In case you find the ``markdownreveal`` command too long or tedious
+   to write, you can use ``mdr`` instead. Usually the former is used in the
+   documentation, but both commands should be considered equivalent.
+
 
 .. index:: navigation
 
