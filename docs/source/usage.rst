@@ -37,7 +37,7 @@ Installation is very straight-forward:
    pip install markdownreveal
 
 This will install all the required dependencies and will provide you with the
-`markdownreveal` command.
+``markdownreveal`` command.
 
 
 .. index:: first steps
@@ -47,7 +47,7 @@ First steps
 
 Let us create our first presentation! First, we need to create a simple
 Markdown file to write our presentation. Let us, for example, create a file
-`presentation.md` and write the following content:
+``presentation.md`` and write the following content:
 
 .. code-block:: markdown
 
@@ -70,7 +70,7 @@ Now, simply execute:
 If everything went well a new tab should be opened in your browser showing
 you the presentation.
 
-Now, while `markdownreveal` is running, edit your `presentation.md` file
+Now, while ``markdownreveal`` is running, edit your ``presentation.md`` file
 and save the changes. Markdownreveal will automatically refresh your browser
 view for you!
 
@@ -82,11 +82,11 @@ Navigation
 
 Here is a short list of the keys you can use to navigate these presentations:
 
-- Use `SPACE` for next slide.
-- Use `MAYUS + SPACE` for next slide.
-- Use `ESC` to visualize the slides grid.
+- Use ``SPACE`` for next slide.
+- Use ``MAYUS + SPACE`` for next slide.
+- Use ``ESC`` to visualize the slides grid.
 - Use arrows to navigate along the grid.
-- Use `S` to open the presenter window.
+- Use ``S`` to open the presenter window.
 
 For more information on navigation options, refer to the
 `official documentation <https://github.com/hakimel/reveal.js/>`_.
@@ -130,7 +130,7 @@ Simple lists:
     - List item.
     - Another one.
 
-Numbered lists (note you can use `1.` for automatic numbering):
+Numbered lists (note you can use ``1.`` for automatic numbering):
 
 .. code-block:: bash
 
