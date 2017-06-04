@@ -18,9 +18,29 @@ to list those commands, you can use the ``--help`` option:
 
    markdownreveal --help
 
-.. note:: There is one subcommand called ``show``, which is the default when
-   no subcommand is specified. This subcommand will, as you already know,
-   open your web browser to visualize your presentation.
+
+.. index:: show
+
+Show your presentation
+======================
+
+If you want to visualize your presentation you need to use the subcommand
+``show``. This is the default when no subcommand is specified, which means
+that this:
+
+.. code-block:: bash
+
+   markdownreveal presentation.md
+
+Is equivalent to:
+
+.. code-block:: bash
+
+   markdownreveal show presentation.md
+
+.. note:: This subcommand also accepts two options: ``--port`` and ``--host``
+   to change the default port and host where the presentation will be served
+   on. See ``markdownreveal show --help`` for more information.
 
 
 .. index:: share
