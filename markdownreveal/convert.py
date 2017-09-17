@@ -38,6 +38,10 @@ def markdown_to_reveal(text: str, config: Config) -> str:
             '--katex=katex/katex.min.js',
             '--katex-stylesheet=katex/katex.min.css',
         ])
+    if config['increment']:
+        extra_args.append(
+            '--increment'
+        )
     for key, value in reveal_extra.items():
         extra_args.extend(['-V', '%s=%s' % (key, value)])
     input_format = 'markdown'
