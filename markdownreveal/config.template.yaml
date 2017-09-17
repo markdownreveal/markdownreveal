@@ -26,6 +26,10 @@ katex_version: 'latest'
 emoji_codes: on
 
 #########################
+# Pandoc configuration
+increment: off
+
+#########################
 # Reveal.js configuration
 
 # A valid reveal.js version such as '3.4.1' ('latest' can be used too)
