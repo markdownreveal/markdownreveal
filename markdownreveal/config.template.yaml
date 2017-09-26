@@ -45,6 +45,12 @@ reveal_extra:
   transition: 'slide'
   transitionSpeed: 'default'
 
+###########################
+# Pandoc configuration
+
+# Extra arguments for pandoc
+pandoc_extra:
+  incremental: off
 
 ###########################
 # Local paths configuration

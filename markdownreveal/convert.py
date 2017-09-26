@@ -27,6 +27,7 @@ def markdown_to_reveal(text: str, config: Config) -> str:
         The converted string.
     """
     reveal_extra = config['reveal_extra']
+    pandoc_extra = config['pandoc_extra']
 
     extra_args = [
         '-s',
@@ -40,6 +41,12 @@ def markdown_to_reveal(text: str, config: Config) -> str:
         ])
     for key, value in reveal_extra.items():
         extra_args.extend(['-V', '%s=%s' % (key, value)])
+    for key, value in pandoc_extra.items():
+        if isinstance(value, bool):
+            if value:
+                extra_args.append('--' + key)
+        else:
+            extra_args.extend(['--' + key, value])
     input_format = 'markdown'
     if config['emoji_codes']:
         input_format += '+emoji'
