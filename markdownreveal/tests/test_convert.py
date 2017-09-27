@@ -4,9 +4,48 @@ Markdownreveal convert module tests.
 from os.path import dirname
 from pathlib import Path
 
+import yaml
+
 from markdownreveal.config import load_config
 from markdownreveal.convert import markdown_to_reveal
 from markdownreveal.convert import generate
+from markdownreveal.convert import pandoc_extra_to_args
+from markdownreveal.convert import reveal_extra_to_args
+
+
+def test_pandoc_extra_to_args():
+    """
+    Test `pandoc_extra_to_args()` function.
+    """
+    text_config = '''
+pandoc_extra:
+  activated: on
+  deactivated: off
+  other: 42
+    '''
+    config = yaml.load(text_config)
+    args = pandoc_extra_to_args(config)
+    assert len(args) == 2
+    assert '--activated' in args
+    assert '--deactivated' not in args
+    assert '--other=42' in args
+
+
+def test_reveal_extra_to_args():
+    """
+    Test `reveal_extra_to_args()` function.
+    """
+    text_config = '''
+reveal_extra:
+  key0: value0
+  key1: value1
+    '''
+    config = yaml.load(text_config)
+    args = reveal_extra_to_args(config)
+    assert len(args) == 4
+    assert args[::2] == ['-V', '-V']
+    assert 'key0=value0' in args
+    assert 'key1=value1' in args
 
 
 def test_markdown_to_reveal():

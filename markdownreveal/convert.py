@@ -1,5 +1,6 @@
 from subprocess import check_output
 from threading import Timer
+from typing import List
 
 from pypandoc import convert_text
 from watchdog.events import FileSystemEventHandler
@@ -9,6 +10,48 @@ from .config import load_config
 from .local import initialize_localdir
 from .tweak import tweak_html
 from .typing import Config
+
+
+def pandoc_extra_to_args(config: Config) -> List[str]:
+    """
+    Transform Pandoc extra configuration options into Pandoc arguments.
+
+    Parameters
+    ----------
+    config
+        Markdownreveal configuration.
+
+    Returns
+    -------
+        A list with all the Pandoc arguments.
+    """
+    arguments = []
+    for key, value in config['pandoc_extra'].items():
+        if isinstance(value, bool):
+            if value:
+                arguments.append('--' + key)
+        else:
+            arguments.append('--{}={}'.format(key, value))
+    return arguments
+
+
+def reveal_extra_to_args(config: Config) -> List[str]:
+    """
+    Transform reveal.js extra configuration options into Pandoc arguments.
+
+    Parameters
+    ----------
+    config
+        Markdownreveal configuration.
+
+    Returns
+    -------
+        A list with all the Pandoc arguments.
+    """
+    arguments = []
+    for key, value in config['reveal_extra'].items():
+        arguments.extend(['-V', '%s=%s' % (key, value)])
+    return arguments
 
 
 def markdown_to_reveal(text: str, config: Config) -> str:
@@ -26,9 +69,6 @@ def markdown_to_reveal(text: str, config: Config) -> str:
     -------
         The converted string.
     """
-    reveal_extra = config['reveal_extra']
-    pandoc_extra = config['pandoc_extra']
-
     extra_args = [
         '-s',
         '--slide-level=2',
@@ -39,14 +79,8 @@ def markdown_to_reveal(text: str, config: Config) -> str:
             '--katex=katex/katex.min.js',
             '--katex-stylesheet=katex/katex.min.css',
         ])
-    for key, value in reveal_extra.items():
-        extra_args.extend(['-V', '%s=%s' % (key, value)])
-    for key, value in pandoc_extra.items():
-        if isinstance(value, bool):
-            if value:
-                extra_args.append('--' + key)
-        else:
-            extra_args.extend(['--' + key, value])
+    extra_args.extend(pandoc_extra_to_args(config))
+    extra_args.extend(reveal_extra_to_args(config))
     input_format = 'markdown'
     if config['emoji_codes']:
         input_format += '+emoji'
