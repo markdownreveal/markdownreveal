@@ -59,13 +59,16 @@ def cli():
     '--warmup',
     type=str,
     default=None,
-    help='Select a file as the warmup image (default: none).',
+    help='Override the warmup image selected in the config.yaml file'
+         ' with another image having the specified name located'
+         ' inside the style folder.',
 )
 @click.option(
     '-n',
     '--no-warmup',
     is_flag=True,
-    help='Ignore the warmup image, even if it exists (default: false).'
+    help='Do not display the warmup slide, even if it exists in the'
+         ' style folder (default: false).'
 )
 def show(
         markdown_file: Path,
