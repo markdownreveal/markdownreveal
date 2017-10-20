@@ -61,7 +61,19 @@ def cli():
     default=None,
     help='Select a file as the warmup image (default: none).',
 )
-def show(markdown_file: Path, host: str = 'localhost', port: int = 8123, warmup: str = None):
+@click.option(
+    '-n',
+    '--no-warmup',
+    is_flag=True,
+    help='Ignore the warmup image, even if it exists (default: false).'
+)
+def show(
+        markdown_file: Path,
+        host: str = 'localhost',
+        port: int = 8123,
+        warmup: str = None,
+        no_warmup: bool = False,
+):
     """
     Visualize your presentation (default).
     """
@@ -69,7 +81,7 @@ def show(markdown_file: Path, host: str = 'localhost', port: int = 8123, warmup:
     config = load_config()
 
     # Initial generation
-    generate(markdown_file, warmup=warmup)
+    generate(markdown_file, warmup=warmup, no_warmup=no_warmup)
 
     observer = Observer()
     url = 'http://{host}:{port}'.format(host=host, port=port)
