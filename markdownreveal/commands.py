@@ -54,7 +54,14 @@ def cli():
     default=8123,
     help='Listen on port (default: 8123).',
 )
-def show(markdown_file: Path, host: str = 'localhost', port: int = 8123):
+@click.option(
+    '-w',
+    '--warmup',
+    type=str,
+    default=None,
+    help='Select a file as the warmup image (default: none).',
+)
+def show(markdown_file: Path, host: str = 'localhost', port: int = 8123, warmup: str = None):
     """
     Visualize your presentation (default).
     """
@@ -62,7 +69,7 @@ def show(markdown_file: Path, host: str = 'localhost', port: int = 8123):
     config = load_config()
 
     # Initial generation
-    generate(markdown_file)
+    generate(markdown_file, warmup=warmup)
 
     observer = Observer()
     url = 'http://{host}:{port}'.format(host=host, port=port)

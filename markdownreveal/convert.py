@@ -105,12 +105,16 @@ def markdown_to_reveal(text: str, config: Config) -> str:
     return output
 
 
-def generate(markdown_file):
+def generate(markdown_file, warmup=None):
     """
     Generate Markdownreveal project.
     """
     # Reload config
     config = load_config()
+
+    # If the --warmup option was specified, edit the config setting for the warmup file
+    if warmup is not None:
+        config['style_warmup'] = warmup
 
     # Initialize localdir
     initialize_localdir(config)
