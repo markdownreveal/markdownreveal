@@ -55,15 +55,6 @@ def cli():
     help='Listen on port (default: 8123).',
 )
 @click.option(
-    '-w',
-    '--warmup',
-    type=str,
-    default=None,
-    help='Override the warmup image selected in the config.yaml file'
-         ' with another image having the specified name located'
-         ' inside the style folder.',
-)
-@click.option(
     '-n',
     '--no-warmup',
     is_flag=True,
@@ -74,7 +65,6 @@ def show(
         markdown_file: Path,
         host: str = 'localhost',
         port: int = 8123,
-        warmup: str = None,
         no_warmup: bool = False,
 ):
     """
@@ -84,7 +74,7 @@ def show(
     config = load_config()
 
     # Initial generation
-    generate(markdown_file, warmup=warmup, no_warmup=no_warmup)
+    generate(markdown_file, no_warmup=no_warmup)
 
     observer = Observer()
     url = 'http://{host}:{port}'.format(host=host, port=port)
