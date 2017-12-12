@@ -39,7 +39,7 @@ def tweak_html_footer(html, footer):
     """
     if not footer:
         return False
-    text = '<div class="footer">%s</div>' % footer
+    text = '<div class="markdownreveal_footer">%s</div>' % footer
     for index in find_indexes(html, '<div class=\"reveal\">'):
         html.insert(index + 1, text)
     return True
@@ -51,7 +51,7 @@ def tweak_html_header(html, header):
     """
     if not header:
         return
-    text = '<div class="header">%s</div>' % header
+    text = '<div class="markdownreveal_header">%s</div>' % header
     for index in find_indexes(html, '<div class=\"reveal\">'):
         html.insert(index + 1, text)
 
