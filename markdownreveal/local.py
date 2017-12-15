@@ -1,5 +1,4 @@
 import os
-import re
 import tarfile
 from hashlib import sha1
 from pathlib import Path
@@ -24,12 +23,11 @@ def latest_project_release(github: str) -> str:
     -----
     For now, only GitHub projects are supported.
     """
-    releases = 'https://api.github.com/repos/%s/releases' % github
-    response = requests.get(releases)
-    # Try to parse latest release manually...
-    response = requests.get('https://github.com/%s/releases' % github)
-    return re.findall('/%s/releases/tag/([^"]*)' % github,
-                      response.text, flags=re.IGNORECASE)[0]
+    response = requests.get(
+        'https://github.com/%s/releases/latest' % github,
+        allow_redirects=True,
+    )
+    return response.url.split('/')[-1]
 
 
 def clean_tar_members(members: TarMembers) -> TarMembers:
