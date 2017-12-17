@@ -105,6 +105,29 @@ def tweak_html_css(html, config):
     return True
 
 
+def tweak_html_emoji(html):
+    """
+    Add required scripts to parse emojis and display them with a consistent
+    style in all browsers.
+    """
+    text = '''
+<script src="//twemoji.maxcdn.com/2/twemoji.min.js?2.4"></script>
+<script>
+  function addEvent(element, eventName, fn) {
+    if (element.addEventListener)
+      element.addEventListener(eventName, fn, false);
+    else if (element.attachEvent)
+      element.attachEvent('on' + eventName, fn);
+  }
+
+  addEvent(window, 'load', function() {
+    twemoji.parse(document.body, {'folder': 'svg', 'ext': '.svg'});
+  });
+</script>
+'''
+    html.insert(find_indexes(html, '</head>')[0], text)
+
+
 def tweak_html(html, config):
     """
     TODO
@@ -116,4 +139,5 @@ def tweak_html(html, config):
     tweak_html_logo(html, config)
     tweak_html_background(html, config)
     tweak_html_css(html, config)
+    tweak_html_emoji(html)
     return '\n'.join(html)
