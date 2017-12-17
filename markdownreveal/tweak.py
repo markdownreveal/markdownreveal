@@ -110,9 +110,6 @@ def tweak_html(html, config):
     TODO
     """
     html = html.splitlines()
-    # TODO: footer and header could be added to the style template (i.e.:
-    #       within a config.yaml file part of the template which Markdownreveal
-    #       should be able to load and override if necessary)
     tweak_html_footer(html, config['footer'])
     tweak_html_header(html, config['header'])
     tweak_html_warmup(html, config)
