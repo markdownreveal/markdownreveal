@@ -1,15 +1,21 @@
 from subprocess import check_output
+from sys import platform
 from threading import Timer
 from typing import List
 
 from pypandoc import convert_text
 from watchdog.events import FileSystemEventHandler
-from watchdog.observers.inotify_buffer import InotifyBuffer
 
 from .config import load_config
 from .local import initialize_localdir
 from .tweak import tweak_html
 from .typing import Config
+
+
+if platform == 'linux':
+    from watchdog.observers.inotify_buffer import InotifyBuffer
+    # Reduce watchdog default buffer delay for faster response times
+    InotifyBuffer.delay = 0.1
 
 
 def pandoc_extra_to_args(config: Config) -> List[str]:
@@ -131,10 +137,6 @@ def generate(markdown_file):
     # Reload view
     with open(str(config['output_path'] / '.reload'), 'a') as f:
         f.write('x\n')
-
-
-# Reduce watchdog default buffer delay for faster response times
-InotifyBuffer.delay = 0.1
 
 
 class Handler(FileSystemEventHandler):
