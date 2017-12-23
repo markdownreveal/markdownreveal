@@ -71,10 +71,20 @@ def show(markdown_file: Path, host: str='localhost', port: int=8123):
         port=port,
     )
 
+def is_valid_remote(remote):    
+    for candidate_remote in shell('git remote -v'):
+        if (
+               remote  in candidate_remote and 
+               'github' in candidate_remote and
+               'push' in candidate_remote
+           ):
+             return True    
+    return False
 
 @cli.command()
 @click.argument('markdown_file')
-def upload(markdown_file: Path):
+@click.option('-r', '--remote', default='origin')
+def upload(markdown_file: Path, remote: str):
     """
     Upload your presentation.
     """
@@ -84,11 +94,10 @@ def upload(markdown_file: Path):
         shell('git status')
     except CalledProcessError as error:
         return
-    origin = shell('git config remote.origin.url')[0]
-    if 'github' not in origin:
-        error = 'Uploading only supported for GitHub repositories!'
+
+    if not is_valid_remote(remote):
+        error = 'Option supplied for remote (%s) is not valid' % remote
         sys.stderr.write(error + '\n')
-        return
 
     # We copy the directory because `git` does not follow symlinks...
     with TemporaryDirectory() as tmpdir:
@@ -102,10 +111,11 @@ def upload(markdown_file: Path):
         shell('git checkout -B gh-pages')
         shell('git %s add .' % worktree)
         shell('git %s commit -m "Markdownreveal live presentation"' % worktree)
-        shell('git %s push -f -u origin gh-pages' % worktree)
+        shell('git %s push -f -u %s gh-pages' % (worktree, remote))
         shell('git %s checkout %s' % (worktree, current))
 
-    repo = Path(origin.split(':')[-1])
+    remote_url = shell('git remote get-url ' + remote)[0]
+    repo = Path(remote_url.split(':')[-1])
     url = 'https://%s.github.io/%s/' % (repo.parent, repo.stem)
     sys.stdout.write('Presentation uploaded to:\n\n' + url + '\n\n')
 
