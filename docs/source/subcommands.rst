@@ -78,6 +78,10 @@ presentation to GitHub pages:
    ``gh-pages``, so make sure your repository holds your presentation only or
    you are not using that branch.
 
+.. note:: You can use the ``--remote`` option to change the default remote
+   where the presentation will be uploaded to. See ``markdownreveal upload
+   --help`` for more information.
+
 
 .. index:: export, pdf
 

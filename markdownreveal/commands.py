@@ -74,7 +74,9 @@ def show(markdown_file: Path, host: str='localhost', port: int=8123):
 
 @cli.command()
 @click.argument('markdown_file')
-def upload(markdown_file: Path):
+@click.option('-r', '--remote', type=str, default='origin',
+              help='Choose a specific remote.')
+def upload(markdown_file: Path, remote: str='origin'):
     """
     Upload your presentation.
     """
@@ -82,10 +84,11 @@ def upload(markdown_file: Path):
 
     try:
         shell('git status')
+        remote_url = shell('git remote get-url --push ' + remote)[0]
     except CalledProcessError as error:
         return
-    origin = shell('git config remote.origin.url')[0]
-    if 'github' not in origin:
+
+    if 'github' not in remote_url:
         error = 'Uploading only supported for GitHub repositories!'
         sys.stderr.write(error + '\n')
         return
@@ -102,10 +105,10 @@ def upload(markdown_file: Path):
         shell('git checkout -B gh-pages')
         shell('git %s add .' % worktree)
         shell('git %s commit -m "Markdownreveal live presentation"' % worktree)
-        shell('git %s push -f -u origin gh-pages' % worktree)
+        shell('git %s push -f -u %s gh-pages' % (worktree, remote))
         shell('git %s checkout %s' % (worktree, current))
 
-    repo = Path(origin.split(':')[-1])
+    repo = Path(remote_url.split(':')[-1])
     url = 'https://%s.github.io/%s/' % (repo.parent, repo.stem)
     sys.stdout.write('Presentation uploaded to:\n\n' + url + '\n\n')
 
