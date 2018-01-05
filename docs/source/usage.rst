@@ -93,7 +93,7 @@ Here is a short list of the keys you can use to navigate these presentations:
 - Use ``S`` to open the presenter window.
 
 For more information on navigation options, refer to the
-`official documentation <https://github.com/hakimel/reveal.js/>`_.
+`official reveal.js documentation <https://github.com/hakimel/reveal.js/>`_.
 
 
 .. index:: notation
@@ -181,5 +181,5 @@ You may also use Emoji codes!
 
     Markdownreveal... :heart_eyes:
 
-For more information, refer to the
-`official documentation <http://pandoc.org/MANUAL.html#pandocs-markdown>`_.
+For more information, refer to the `official Pandoc documentation
+<http://pandoc.org/MANUAL.html#pandocs-markdown>`_.
