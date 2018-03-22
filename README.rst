@@ -13,10 +13,16 @@ Markdown notation. It is based on reveal.js and is able to generate the
 required HTML and refresh your browser view for easier and faster
 presentation creation.
 
-- `Online presentation example <https://markdownreveal.github.io/example/>`_ 
-  (`source code <https://github.com/markdownreveal/example>`_).
+Install it with::
+
+   pip install markdownreveal
+
+Refer to the documentation and example to understand how to run it and how
+to write your presentations:
+
 - `Documentation <https://markdownreveal.readthedocs.io/>`_.
-- `Markdownreveal on Pypi <https://pypi.python.org/pypi/markdownreveal>`_.
+- `Online presentation example <https://markdownreveal.github.io/example/>`_
+  (`source code <https://github.com/markdownreveal/example>`_).
 
 
 .. |logo|
