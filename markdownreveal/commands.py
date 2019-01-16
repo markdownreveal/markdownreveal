@@ -85,7 +85,7 @@ def upload(markdown_file: Path, remote: str='origin'):
     try:
         shell('git status')
         remote_url = shell('git remote get-url --push ' + remote)[0]
-    except CalledProcessError as error:
+    except CalledProcessError:
         return
 
     if 'github' not in remote_url:
