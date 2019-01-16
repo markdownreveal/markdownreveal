@@ -1,9 +1,11 @@
+from distutils.version import LooseVersion
 from subprocess import check_output
 from sys import platform
 from threading import Timer
 from typing import List
 
 from pypandoc import convert_text
+from pypandoc import get_pandoc_version
 from watchdog.events import FileSystemEventHandler
 
 from .config import load_config
@@ -81,10 +83,16 @@ def markdown_to_reveal(text: str, config: Config) -> str:
         '-V', 'revealjs-url=revealjs',
     ]
     if config['katex']:
-        extra_args.extend([
-            '--katex=katex/katex.min.js',
-            '--katex-stylesheet=katex/katex.min.css',
-        ])
+        pandoc_version = get_pandoc_version()
+        if LooseVersion(pandoc_version) < LooseVersion('2.0'):
+            extra_args.extend([
+                '--katex=katex/katex.min.js',
+                '--katex-stylesheet=katex/katex.min.css',
+            ])
+        else:
+            extra_args.extend([
+                '--katex=katex/',
+            ])
     extra_args.extend(pandoc_extra_to_args(config))
     extra_args.extend(reveal_extra_to_args(config))
     input_format = 'markdown'
