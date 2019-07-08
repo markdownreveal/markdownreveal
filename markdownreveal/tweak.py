@@ -87,9 +87,12 @@ def tweak_html_background(html, config):
     fname = find_style_file('style_background', config)
     if not fname:
         return
-    text = '<section data-background="%s">' % fname
-    for index in find_indexes(html, '<section>'):
-        html[index] = html[index].replace('<section>', text)
+    for index in find_indexes(html, '^<section.*'):
+        html[index] = html[index].replace(
+            '<section',
+            '<section data-background="%s"' % fname,
+            1,
+        )
 
 
 def tweak_html_css(html, config):
