@@ -60,7 +60,7 @@ def test_markdown_to_reveal():
 
 ## Subsection
 
-Once upon a time...
+Once upon a time
 
 - there were
 - some small worms
@@ -68,7 +68,7 @@ Once upon a time...
     config = load_config()
     html = markdown_to_reveal(text=text, config=config)
     assert '<h1 class="title">Title</h1>' in html
-    assert '<p>Once upon a time...</p>' in html
+    assert '<p>Once upon a time</p>' in html
     assert '<li>there were</li>' in html
 
 
