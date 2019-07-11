@@ -36,7 +36,7 @@ setup(
     packages=['markdownreveal'],
     package_data={'markdownreveal': ['config.template.yaml']},
     install_requires=[
-        'PyYAML',
+        'PyYAML>=5.1',
         'requests',
         'pypandoc',
         'livereload',

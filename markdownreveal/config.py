@@ -67,13 +67,13 @@ def load_config() -> Config:
     """
     # Default Markdownreveal configuration
     config_template = resource_filename(__name__, 'config.template.yaml')
-    config = yaml.load(open(config_template))
+    config = yaml.safe_load(open(config_template))
 
     # Local configuration (load first for style path)
     local_config = {}
     config_file = Path('config.yaml')
     if config_file.exists():
-        local_config = yaml.load(config_file.read_text())
+        local_config = yaml.safe_load(config_file.read_text())
         update_config(config, local_config)
     complete_config(config)
 
@@ -81,7 +81,7 @@ def load_config() -> Config:
     style_config = {}
     config_file = config['output_path'] / 'markdownrevealstyle' / 'config.yaml'
     if config_file.exists():
-        style_config = yaml.load(config_file.read_text())
+        style_config = yaml.safe_load(config_file.read_text())
         update_config(config, style_config)
     complete_config(config)
 

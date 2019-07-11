@@ -23,7 +23,7 @@ pandoc_extra:
   deactivated: off
   other: 42
     '''
-    config = yaml.load(text_config)
+    config = yaml.safe_load(text_config)
     args = pandoc_extra_to_args(config)
     assert len(args) == 2
     assert '--activated' in args
@@ -40,7 +40,7 @@ reveal_extra:
   key0: value0
   key1: value1
     '''
-    config = yaml.load(text_config)
+    config = yaml.safe_load(text_config)
     args = reveal_extra_to_args(config)
     assert len(args) == 4
     assert args[::2] == ['-V', '-V']
