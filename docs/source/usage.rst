@@ -18,7 +18,7 @@ In order to use Markdown reveal you need:
 
 And optionally:
 
-- Docker (for exporting to PDF).
+- Decktape (``npm install -g decktape``), for exporting to PDF
 
 .. note:: Windows and Mac platforms are theoretically supported, but not
    currently tested by developers. For those platforms you may not even need
