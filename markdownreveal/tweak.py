@@ -114,7 +114,8 @@ def tweak_html_emoji(html):
     style in all browsers.
     """
     text = '''
-<script src="//twemoji.maxcdn.com/2/twemoji.min.js?2.4"></script>
+<script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"
+  crossorigin="anonymous"></script>
 <script>
   function addEvent(element, eventName, fn) {
     if (element.addEventListener)
