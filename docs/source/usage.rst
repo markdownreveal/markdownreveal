@@ -39,6 +39,12 @@ Installation is very straight-forward:
 This will install all the required dependencies and will provide you with the
 ``markdownreveal`` command.
 
+Alternatively, you can use Docker for running ``markdownreveal`` command:
+
+.. code-block:: bash
+
+   docker run -it --rm -p 8123:8123 -v ${PWD}/tmp:/home/mdr/files markdownreveal/markdownreveal -p 8123 -h 0.0.0.0 presentation.md
+
 
 .. index:: first steps
 
