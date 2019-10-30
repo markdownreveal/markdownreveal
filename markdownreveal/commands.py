@@ -1,5 +1,6 @@
 import sys
 import shlex
+import threading
 from subprocess import run
 from subprocess import check_output
 from subprocess import CalledProcessError
@@ -10,8 +11,11 @@ from shutil import make_archive
 from shutil import rmtree
 
 import click
+import webbrowser
 from click_default_group import DefaultGroup
 from livereload import Server
+from tornado.ioloop import IOLoop
+from tornado.autoreload import add_reload_hook
 from watchdog.observers import Observer
 
 from .convert import Handler
@@ -46,25 +50,25 @@ def show(markdown_file: Path, host: str='localhost', port: int=8123):
     Visualize your presentation (default).
     """
     markdown_file = Path(markdown_file)
+    config = load_config()
 
-    observer = Observer()
-    reload_url = 'http://{host}:{port}/forcereload'.format(host=host, port=port)
-    handler = Handler(markdown_file, reload_url)
     # Initial generation
     generate(markdown_file)
+
+    observer = Observer()
+    url = 'http://{host}:{port}'.format(host=host, port=port)
+    reload_url = url + '/forcereload'
+    handler = Handler(markdown_file, reload_url)
     observer.schedule(handler, '.', recursive=True)
     observer.start()
 
     server = Server()
-    config = load_config()
-    server.serve(
-        root=str(config['output_path']),
-        restart_delay=0,
-        debug=False,
-        open_url_delay=0.1,
-        host=host,
-        port=port,
-    )
+    server.root = str(config['output_path'])
+    server.application(
+        port, host, liveport=None, debug=True, live_css=True)
+    threading.Thread(target=webbrowser.open, args=(url, )).start()
+    add_reload_hook(lambda: IOLoop.instance().close(all_fds=True))
+    IOLoop.instance().start()
 
 
 @cli.command()
