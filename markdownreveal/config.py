@@ -1,9 +1,9 @@
-import os
 import collections
+import os
 from pathlib import Path
-from pkg_resources import resource_filename
 
 import yaml
+from pkg_resources import resource_filename
 
 from .typing import Config
 

@@ -5,15 +5,14 @@ import json
 import time
 from hashlib import sha1
 from pathlib import Path
+from shutil import rmtree
 from tarfile import TarInfo
 from tempfile import mkdtemp
-from shutil import rmtree
 
 import pytest
-
-from markdownreveal.local import latest_project_release
 from markdownreveal.local import clean_tar_members
 from markdownreveal.local import initialize_localdir
+from markdownreveal.local import latest_project_release
 
 
 def test_latest_project_release():

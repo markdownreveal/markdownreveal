@@ -2,8 +2,8 @@
 Setup module.
 """
 from setuptools import setup
-from markdownreveal import __version__
 
+from markdownreveal import __version__
 
 setup(
     name='markdownreveal',

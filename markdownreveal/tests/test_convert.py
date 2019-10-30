@@ -7,8 +7,8 @@ from pathlib import Path
 import yaml
 
 from markdownreveal.config import load_config
-from markdownreveal.convert import markdown_to_reveal
 from markdownreveal.convert import generate
+from markdownreveal.convert import markdown_to_reveal
 from markdownreveal.convert import pandoc_extra_to_args
 from markdownreveal.convert import reveal_extra_to_args
 

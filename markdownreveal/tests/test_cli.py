@@ -1,5 +1,5 @@
-from pathlib import Path
 from os.path import dirname
+from pathlib import Path
 
 from markdownreveal.commands import zip as cmd_zip
 

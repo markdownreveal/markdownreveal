@@ -5,8 +5,8 @@ import os
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from markdownreveal.config import update_config
 from markdownreveal.config import load_config
+from markdownreveal.config import update_config
 
 
 def test_update_config():

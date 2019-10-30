@@ -1,26 +1,26 @@
-import sys
 import shlex
+import sys
 import threading
-from subprocess import run
-from subprocess import check_output
-from subprocess import CalledProcessError
-from tempfile import TemporaryDirectory
+import webbrowser
 from pathlib import Path
 from shutil import copytree
 from shutil import make_archive
 from shutil import rmtree
+from subprocess import CalledProcessError
+from subprocess import check_output
+from subprocess import run
+from tempfile import TemporaryDirectory
 
 import click
-import webbrowser
 from click_default_group import DefaultGroup
 from livereload import Server
-from tornado.ioloop import IOLoop
 from tornado.autoreload import add_reload_hook
+from tornado.ioloop import IOLoop
 from watchdog.observers import Observer
 
+from .config import load_config
 from .convert import Handler
 from .convert import generate
-from .config import load_config
 
 
 def shell(command):

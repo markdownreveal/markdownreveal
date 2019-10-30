@@ -14,7 +14,6 @@ from .local import initialize_localdir
 from .tweak import tweak_html
 from .typing import Config
 
-
 if platform == 'linux':
     from watchdog.observers.inotify_buffer import InotifyBuffer
 
