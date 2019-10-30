@@ -111,7 +111,7 @@ def tweak_html_emoji(html):
     Add required scripts to parse emojis and display them with a consistent
     style in all browsers.
     """
-    text = '''
+    text = """
 <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"
   crossorigin="anonymous"></script>
 <script>
@@ -126,7 +126,7 @@ def tweak_html_emoji(html):
     twemoji.parse(document.body, {'folder': 'svg', 'ext': '.svg'});
   });
 </script>
-'''
+"""
     html.insert(find_indexes(html, '</head>')[0], text)
 
 

@@ -17,12 +17,12 @@ def test_pandoc_extra_to_args():
     """
     Test `pandoc_extra_to_args()` function.
     """
-    text_config = '''
+    text_config = """
 pandoc_extra:
   activated: on
   deactivated: off
   other: 42
-    '''
+    """
     config = yaml.safe_load(text_config)
     args = pandoc_extra_to_args(config)
     assert len(args) == 2
@@ -35,11 +35,11 @@ def test_reveal_extra_to_args():
     """
     Test `reveal_extra_to_args()` function.
     """
-    text_config = '''
+    text_config = """
 reveal_extra:
   key0: value0
   key1: value1
-    '''
+    """
     config = yaml.safe_load(text_config)
     args = reveal_extra_to_args(config)
     assert len(args) == 4
@@ -52,7 +52,7 @@ def test_markdown_to_reveal():
     """
     Test `markdown_to_reveal()` function.
     """
-    text = '''% Title
+    text = """% Title
 % Author
 % Date
 
@@ -64,7 +64,7 @@ Once upon a time
 
 - there were
 - some small worms
-    '''
+    """
     config = load_config()
     html = markdown_to_reveal(text=text, config=config)
     assert '<h1 class="title">Title</h1>' in html
