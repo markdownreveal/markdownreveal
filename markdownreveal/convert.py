@@ -4,6 +4,7 @@ from sys import platform
 from threading import Timer
 from typing import List
 
+import requests
 from pypandoc import convert_text
 from pypandoc import get_pandoc_version
 from watchdog.events import FileSystemEventHandler
@@ -113,7 +114,7 @@ def markdown_to_reveal(text: str, config: Config) -> str:
 
 def generate(markdown_file):
     """
-    TODO
+    Generate Markdownreveal project.
     """
     # Reload config
     config = load_config()
@@ -142,14 +143,19 @@ def generate(markdown_file):
     index = config['output_path'] / 'index.html'
     index.write_text(output)
 
-    # Reload view
-    with open(str(config['output_path'] / '.reload'), 'a') as f:
-        f.write('x\n')
+
+def generate_and_reload(markdown_file, reload_url):
+    """
+    Generate Markdownreveal project and reload web browser view.
+    """
+    generate(markdown_file)
+    requests.get(reload_url)
 
 
 class Handler(FileSystemEventHandler):
-    def __init__(self, markdown_file, period=0.1):
+    def __init__(self, markdown_file, reload_url, period=0.1):
         self.markdown_file = markdown_file
+        self.reload_url = reload_url
         self.period = period
         self.timer = None
         self.set_timer()
@@ -161,4 +167,4 @@ class Handler(FileSystemEventHandler):
         self.timer.start()
 
     def set_timer(self):
-        self.timer = Timer(self.period, generate, args=(self.markdown_file,))
+        self.timer = Timer(self.period, generate_and_reload, args=(self.markdown_file, self.reload_url))

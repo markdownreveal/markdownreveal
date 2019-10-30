@@ -48,7 +48,8 @@ def show(markdown_file: Path, host: str='localhost', port: int=8123):
     markdown_file = Path(markdown_file)
 
     observer = Observer()
-    handler = Handler(markdown_file)
+    reload_url = 'http://{host}:{port}/forcereload'.format(host=host, port=port)
+    handler = Handler(markdown_file, reload_url)
     # Initial generation
     generate(markdown_file)
     observer.schedule(handler, '.', recursive=True)
@@ -56,7 +57,6 @@ def show(markdown_file: Path, host: str='localhost', port: int=8123):
 
     server = Server()
     config = load_config()
-    server.watch(str(config['output_path'] / '.reload'), delay=0)
     server.serve(
         root=str(config['output_path']),
         restart_delay=0,
