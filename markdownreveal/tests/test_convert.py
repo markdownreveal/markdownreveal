@@ -76,7 +76,7 @@ def test_markdown_to_reveal_katex():
     """
     Katex math rendering.
     """
-    text = '$$ a^2 = \sqrt{b^2 + c^2} $$'
+    text = '$$ a^2 = \\sqrt{b^2 + c^2} $$'
     config = load_config()
     # Katex rendering
     config['katex'] = True
