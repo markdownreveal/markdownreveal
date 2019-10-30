@@ -61,8 +61,7 @@ def show(markdown_file: Path, host: str='localhost', port: int=8123):
         root=str(config['output_path']),
         restart_delay=0,
         debug=False,
-        open_url=True,
-        open_url_delay=0,
+        open_url_delay=0.1,
         host=host,
         port=port,
     )
