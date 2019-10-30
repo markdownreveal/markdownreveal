@@ -32,7 +32,7 @@ setup(
         'console_scripts': [
             'mdr = markdownreveal.commands:cli',
             'markdownreveal = markdownreveal.commands:cli',
-        ],
+        ]
     },
     packages=['markdownreveal'],
     package_data={'markdownreveal': ['config.template.yaml']},
@@ -43,7 +43,8 @@ setup(
         'livereload',
         'watchdog',
         'click',
-        'click_default_group'],
+        'click_default_group',
+    ],
     extras_require={
         'dev': [],
         'test': ['tox'],

@@ -38,17 +38,19 @@ def test_clean_tar_members():
     """
     Test `clean_tar_members()` function.
     """
-    members = [TarInfo('toplevel'),
-               TarInfo('toplevel/index.html'),
-               TarInfo('toplevel/foo/bar.xyz')]
-    output = [TarInfo('index.html'),
-              TarInfo('foo/bar.xyz')]
+    members = [
+        TarInfo('toplevel'),
+        TarInfo('toplevel/index.html'),
+        TarInfo('toplevel/foo/bar.xyz'),
+    ]
+    output = [TarInfo('index.html'), TarInfo('foo/bar.xyz')]
     result = clean_tar_members(members)
     assert all(x.name == y.name for x, y in zip(output, result))
 
 
 @pytest.mark.parametrize(
-    'reveal_version,katex_version,reveal_tag,katex_tag,style', [
+    'reveal_version,katex_version,reveal_tag,katex_tag,style',
+    [
         (
             'latest',
             'latest',
@@ -61,13 +63,14 @@ def test_clean_tar_members():
             'v0.7.1',
             '3.4.0',
             'v0.7.1',
-            'https://github.com/markdownreveal/style-default/' +
-            'archive/master.tar.gz',
+            'https://github.com/markdownreveal/style-default/'
+            + 'archive/master.tar.gz',
         ),
-    ]
+    ],
 )
-def test_initialize_localdir(reveal_version, katex_version, reveal_tag,
-                             katex_tag, style):
+def test_initialize_localdir(
+    reveal_version, katex_version, reveal_tag, katex_tag, style
+):
     """
     Test `initialize_localdir()` function.
     """

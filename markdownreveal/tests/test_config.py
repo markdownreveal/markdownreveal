@@ -47,9 +47,11 @@ def test_load_config_local():
         os.environ['MARKDOWNREVEAL_HOME'] = str(tmpdir)
         # Create local configuration file
         config_file = tmpdir / 'config.yaml'
-        config_file.write_text('footer: "local footer"\n'
-                               'header: "local header"\n'
-                               'style: "https://other/style/file.tar.gz"')
+        config_file.write_text(
+            'footer: "local footer"\n'
+            'header: "local header"\n'
+            'style: "https://other/style/file.tar.gz"'
+        )
         # Load configuration
         old = Path.cwd()
         os.chdir(str(tmpdir))
@@ -79,8 +81,9 @@ def test_load_config_local_and_style():
         style_path = tmpdir / '.markdownreveal' / 'out' / 'markdownrevealstyle'
         style_path.mkdir(parents=True)
         config_file = style_path / 'config.yaml'
-        config_file.write_text('footer: "style footer"\n'
-                               'header: "style header"')
+        config_file.write_text(
+            'footer: "style footer"\n' 'header: "style header"'
+        )
         # Load configuration
         old = Path.cwd()
         os.chdir(str(tmpdir))

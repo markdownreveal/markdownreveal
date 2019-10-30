@@ -24,8 +24,7 @@ def latest_project_release(github: str) -> str:
     For now, only GitHub projects are supported.
     """
     response = requests.get(
-        'https://github.com/%s/releases/latest' % github,
-        allow_redirects=True,
+        'https://github.com/%s/releases/latest' % github, allow_redirects=True
     )
     return response.url.split('/')[-1]
 
@@ -58,9 +57,14 @@ def clean_tar_members(members: TarMembers) -> TarMembers:
     return clean
 
 
-def initialize_localdir_project(github: str, outdir: Path, localdir: Path,
-                                project_version: str, name: str,
-                                download_url: str) -> Path:
+def initialize_localdir_project(
+    github: str,
+    outdir: Path,
+    localdir: Path,
+    project_version: str,
+    name: str,
+    download_url: str,
+) -> Path:
     """
     Initialize local directory with the specified project.
 
@@ -91,8 +95,9 @@ def initialize_localdir_project(github: str, outdir: Path, localdir: Path,
     if not project_path.exists():
         if project_version == 'latest':
             project_version = latest_project_release(github=github)
-        download_url = download_url.format(project=github,
-                                           version=project_version)
+        download_url = download_url.format(
+            project=github, version=project_version
+        )
         reveal_tar, headers = urlretrieve(download_url)
         with tarfile.open(reveal_tar) as tar:
             members = clean_tar_members(tar.getmembers())
@@ -104,8 +109,9 @@ def initialize_localdir_project(github: str, outdir: Path, localdir: Path,
     symlink.symlink_to(project_path, target_is_directory=True)
 
 
-def initialize_localdir_style(outdir: Path, localdir: Path,
-                              style_url: str) -> Path:
+def initialize_localdir_style(
+    outdir: Path, localdir: Path, style_url: str
+) -> Path:
     """
     Initialize local directory with the required style files.
 
@@ -163,7 +169,7 @@ def initialize_localdir(config: Config) -> Path:
         localdir=localdir,
         project_version=config['reveal_version'],
         name='revealjs',
-        download_url='https://github.com/{project}/archive/{version}.tar.gz'
+        download_url='https://github.com/{project}/archive/{version}.tar.gz',
     )
 
     # KaTeX
@@ -173,8 +179,8 @@ def initialize_localdir(config: Config) -> Path:
         localdir=localdir,
         project_version=config['katex_version'],
         name='katex',
-        download_url='https://github.com/{project}/' +
-                     'releases/download/{version}/katex.tar.gz'
+        download_url='https://github.com/{project}/'
+        + 'releases/download/{version}/katex.tar.gz',
     )
 
     # Style

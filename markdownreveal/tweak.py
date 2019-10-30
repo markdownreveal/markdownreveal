@@ -89,9 +89,7 @@ def tweak_html_background(html, config):
         return
     for index in find_indexes(html, '^<section.*'):
         html[index] = html[index].replace(
-            '<section',
-            '<section data-background="%s"' % fname,
-            1,
+            '<section', '<section data-background="%s"' % fname, 1
         )
 
 

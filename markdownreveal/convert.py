@@ -17,6 +17,7 @@ from .typing import Config
 
 if platform == 'linux':
     from watchdog.observers.inotify_buffer import InotifyBuffer
+
     # Reduce watchdog default buffer delay for faster response times
     InotifyBuffer.delay = 0.1
 
@@ -78,32 +79,25 @@ def markdown_to_reveal(text: str, config: Config) -> str:
     -------
         The converted string.
     """
-    extra_args = [
-        '-s',
-        '--slide-level=2',
-        '-V', 'revealjs-url=revealjs',
-    ]
+    extra_args = ['-s', '--slide-level=2', '-V', 'revealjs-url=revealjs']
     if config['katex']:
         pandoc_version = get_pandoc_version()
         if LooseVersion(pandoc_version) < LooseVersion('2.0'):
-            extra_args.extend([
-                '--katex=katex/katex.min.js',
-                '--katex-stylesheet=katex/katex.min.css',
-            ])
+            extra_args.extend(
+                [
+                    '--katex=katex/katex.min.js',
+                    '--katex-stylesheet=katex/katex.min.css',
+                ]
+            )
         else:
-            extra_args.extend([
-                '--katex=katex/',
-            ])
+            extra_args.extend(['--katex=katex/'])
     extra_args.extend(pandoc_extra_to_args(config))
     extra_args.extend(reveal_extra_to_args(config))
     input_format = 'markdown'
     if config['emoji_codes']:
         input_format += '+emoji'
     output = convert_text(
-        source=text,
-        format=input_format,
-        to='revealjs',
-        extra_args=extra_args,
+        source=text, format=input_format, to='revealjs', extra_args=extra_args
     )
 
     # HTML substitution
@@ -126,10 +120,14 @@ def generate(markdown_file):
     command = [
         'rsync',
         '--delete',
-        '--exclude', 'katex',
-        '--exclude', 'revealjs',
-        '--exclude', 'markdownrevealstyle',
-        '--exclude', '.git',
+        '--exclude',
+        'katex',
+        '--exclude',
+        'revealjs',
+        '--exclude',
+        'markdownrevealstyle',
+        '--exclude',
+        '.git',
         '-av',
         '%s/' % markdown_file.resolve().parent,
         '%s/' % config['output_path'],
@@ -167,4 +165,8 @@ class Handler(FileSystemEventHandler):
         self.timer.start()
 
     def set_timer(self):
-        self.timer = Timer(self.period, generate_and_reload, args=(self.markdown_file, self.reload_url))
+        self.timer = Timer(
+            self.period,
+            generate_and_reload,
+            args=(self.markdown_file, self.reload_url),
+        )

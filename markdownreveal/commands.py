@@ -32,8 +32,7 @@ def shell(command):
 
 @click.group(cls=DefaultGroup, default='show')
 @click.version_option(
-    prog_name='Markdownreveal',
-    message='%(prog)s %(version)s'
+    prog_name='Markdownreveal', message='%(prog)s %(version)s'
 )
 def cli():
     pass
@@ -41,11 +40,21 @@ def cli():
 
 @cli.command()
 @click.argument('markdown_file')
-@click.option('-h', '--host', type=str, default='localhost',
-              help='Listen on IP (default: localhost).')
-@click.option('-p', '--port', type=int, default=8123,
-              help='Listen on port (default: 8123).')
-def show(markdown_file: Path, host: str='localhost', port: int=8123):
+@click.option(
+    '-h',
+    '--host',
+    type=str,
+    default='localhost',
+    help='Listen on IP (default: localhost).',
+)
+@click.option(
+    '-p',
+    '--port',
+    type=int,
+    default=8123,
+    help='Listen on port (default: 8123).',
+)
+def show(markdown_file: Path, host: str = 'localhost', port: int = 8123):
     """
     Visualize your presentation (default).
     """
@@ -64,18 +73,22 @@ def show(markdown_file: Path, host: str='localhost', port: int=8123):
 
     server = Server()
     server.root = str(config['output_path'])
-    server.application(
-        port, host, liveport=None, debug=True, live_css=True)
-    threading.Thread(target=webbrowser.open, args=(url, )).start()
+    server.application(port, host, liveport=None, debug=True, live_css=True)
+    threading.Thread(target=webbrowser.open, args=(url,)).start()
     add_reload_hook(lambda: IOLoop.instance().close(all_fds=True))
     IOLoop.instance().start()
 
 
 @cli.command()
 @click.argument('markdown_file')
-@click.option('-r', '--remote', type=str, default='origin',
-              help='Choose a specific remote.')
-def upload(markdown_file: Path, remote: str='origin'):
+@click.option(
+    '-r',
+    '--remote',
+    type=str,
+    default='origin',
+    help='Choose a specific remote.',
+)
+def upload(markdown_file: Path, remote: str = 'origin'):
     """
     Upload your presentation.
     """
@@ -145,8 +158,7 @@ def pdf(markdown_file: str):
 
     name = 'slides.pdf'
     command = 'decktape reveal {presentation} {name}'.format(
-        presentation=presentation,
-        name=name,
+        presentation=presentation, name=name
     )
     run(shlex.split(command))
 

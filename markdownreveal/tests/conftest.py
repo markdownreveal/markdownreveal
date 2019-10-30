@@ -14,4 +14,5 @@ def validate_cliresult():
         assert result.exit_code == 0
         assert not result.exception
         assert 'error' not in result.output.lower()
+
     return decorator
