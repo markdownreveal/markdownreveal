@@ -67,7 +67,11 @@ def show(markdown_file: Path, host: str = 'localhost', port: int = 8123):
     observer = Observer()
     url = 'http://{host}:{port}'.format(host=host, port=port)
     reload_url = url + '/forcereload'
-    handler = Handler(markdown_file, reload_url)
+    ignore_regexes = [r'.*/\.[^/]*']
+    handler = Handler(
+        regexes=['.*'], ignore_regexes=ignore_regexes, ignore_directories=True
+    )
+    handler.configure(markdown_file, reload_url)
     observer.schedule(handler, '.', recursive=True)
     observer.start()
 

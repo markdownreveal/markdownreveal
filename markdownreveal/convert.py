@@ -7,7 +7,7 @@ from typing import List
 import requests
 from pypandoc import convert_text
 from pypandoc import get_pandoc_version
-from watchdog.events import FileSystemEventHandler
+from watchdog.events import RegexMatchingEventHandler
 
 from .config import load_config
 from .local import initialize_localdir
@@ -149,8 +149,8 @@ def generate_and_reload(markdown_file, reload_url):
     requests.get(reload_url)
 
 
-class Handler(FileSystemEventHandler):
-    def __init__(self, markdown_file, reload_url, period=0.1):
+class Handler(RegexMatchingEventHandler):
+    def configure(self, markdown_file, reload_url, period=0.1):
         self.markdown_file = markdown_file
         self.reload_url = reload_url
         self.period = period
