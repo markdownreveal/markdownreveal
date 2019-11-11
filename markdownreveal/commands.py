@@ -115,6 +115,7 @@ def upload(markdown_file: Path, remote: str = 'origin'):
         generate(markdown_file)
         config = load_config()
         copytree(src=str(config['output_path']), dst=str(tmpdir))
+        (tmpdir / '.nojekyll').touch()
 
         worktree = '--work-tree=%s' % tmpdir
         current = shell('git rev-parse --abbrev-ref HEAD')[0]
