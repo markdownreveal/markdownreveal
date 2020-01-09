@@ -49,7 +49,7 @@ Let us create our first presentation! First, we need to create a simple
 Markdown file to write our presentation. Let us, for example, create a file
 ``presentation.md`` and write the following content:
 
-.. code-block:: markdown
+.. code-block:: md
 
     % Presentation title
     % Author
