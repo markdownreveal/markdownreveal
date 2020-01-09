@@ -149,7 +149,14 @@ def zip(markdown_file: Path):
 
 @cli.command()
 @click.argument('markdown_file')
-def pdf(markdown_file: str):
+@click.option(
+    '-s',
+    '--size',
+    type=str,
+    default='1920x1080',
+    help='Page size (resolution); use 2048x1536 for 4:3.',
+)
+def pdf(markdown_file: str, size: str = '1920x1080'):
     """
     Generate a PDF file with the presentation.
     """
@@ -162,8 +169,8 @@ def pdf(markdown_file: str):
         presentation = config['output_path'] / 'index.html'
 
     name = 'slides.pdf'
-    command = 'decktape reveal {presentation} {name}'.format(
-        presentation=presentation, name=name
+    command = 'decktape reveal --size={size} {presentation} {name}'.format(
+        size=size, presentation=presentation, name=name
     )
     run(shlex.split(command))
 

@@ -88,9 +88,16 @@ presentation to GitHub pages:
 Export to PDF
 =============
 
-You can also export your presentation to PDF. This functionality, however,
-requires `Decktape <https://github.com/astefanutti/decktape>`_, which you can
-very easily install with:
+You can also export your presentation to PDF. To do so, however, you need
+`Decktape <https://github.com/astefanutti/decktape>`_ or a `Chromium
+<https://www.chromium.org/Home>`_/`Chrome <https://www.google.com/chrome/>`_
+web browser.
+
+
+Decktape
+--------
+
+Decktape is a Node package, which you can install with:
 
 .. code-block:: bash
 
@@ -102,16 +109,42 @@ In order to export your presentation to PDF, use the ``pdf`` subcommand:
 
    markdownreveal pdf presentation.md
 
-Alternatively, you may provide the
-URL where your presentation is being served (either the server
-where you uploaded it or the local server that is spawned when you run
-Markdownreveal locally and the presentation is opened in your browser):
+You can use the ``--size`` option to change the default 16:9 aspect ratio. For
+example (for 4:3):
+
+.. code-block:: bash
+
+   markdownreveal pdf --size 2048x1536 presentation.md
+
+.. warning:: Use high-resolution sizes to avoid issues with the PDF layout.
+   See https://github.com/astefanutti/decktape/issues/151 for more information.
+
+Instead of the local Markdown file, you may also provide the URL where your
+presentation is being served (either the server where you uploaded it or the
+local server that is spawned when you run Markdownreveal locally and the
+presentation is opened in your browser).
 
 .. code-block:: bash
 
    markdownreveal pdf http://localhost:8123/
 
-A PDF file will be created in the current directory with the presentation.
+Markdownreveal will fetch the presentation from the URL and generate the PDF
+for you:
+
+
+Chromium or Chrome
+------------------
+
+In order to use your web browser to create a PDF, you first need to load a
+special print stylesheet. To do so, include ``print-pdf`` in the query string
+(in example: http://localhost:8123/?print-pdf).
+
+Then open the in-browser print dialog (CTRL + P) and configure the print
+settings:
+
+- Landscape
+- No margins
+- Enable background graphics
 
 
 .. index:: clean, local
