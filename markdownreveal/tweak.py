@@ -60,7 +60,7 @@ def tweak_html_warmup(html, config):
     """
     TODO
     """
-    if 'no_warmup' in config and config['no_warmup']:
+    if config.get("no_warmup"):
         return
     fname = find_style_file('style_warmup', config)
     if not fname:
