@@ -59,13 +59,13 @@ def cli():
     '--no-warmup',
     is_flag=True,
     help='Do not display the warmup slide, even if it exists in the'
-         ' style folder (default: false).'
+    ' style folder (default: false).',
 )
 def show(
-        markdown_file: Path,
-        host: str = 'localhost',
-        port: int = 8123,
-        no_warmup: bool = False,
+    markdown_file: Path,
+    host: str = 'localhost',
+    port: int = 8123,
+    no_warmup: bool = False,
 ):
     """
     Visualize your presentation (default).
