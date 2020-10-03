@@ -38,9 +38,12 @@ Is equivalent to:
 
    markdownreveal show presentation.md
 
-.. note:: This subcommand also accepts two options: ``--port`` and ``--host``
-   to change the default port and host where the presentation will be served
-   on. See ``markdownreveal show --help`` for more information.
+This subcommand accepts options for changing the default host, port and
+configuring whether or not to display the warmup slide:
+
+.. code-block:: bash
+
+   markdownreveal show --help
 
 
 .. index:: share
