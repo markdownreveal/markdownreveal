@@ -105,12 +105,17 @@ def markdown_to_reveal(text: str, config: Config) -> str:
     return output
 
 
-def generate(markdown_file):
+def generate(markdown_file, no_warmup=False):
     """
     Generate Markdownreveal project.
     """
     # Reload config
     config = load_config()
+
+    # If the --no-warmup option was specified, do not generate the warmup slide
+    # The 'no_warmup' key in the config makes the tweak_html_warmup function
+    # return None, skipping the slide generation
+    config['no_warmup'] = no_warmup
 
     # Initialize localdir
     initialize_localdir(config)
