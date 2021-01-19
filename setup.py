@@ -40,7 +40,7 @@ setup(
         'PyYAML>=5.1',
         'requests',
         'pypandoc',
-        'livereload',
+        'livereload==2.6.2',
         'watchdog',
         'click',
         'click_default_group',
