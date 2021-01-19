@@ -29,7 +29,7 @@ emoji_codes: on
 # Reveal.js configuration
 
 # A valid reveal.js version such as '3.4.1' ('latest' can be used too)
-reveal_version: 'latest'
+reveal_version: '3.9.2'
 
 # Extra arguments for reveal.js
 reveal_extra:
