@@ -101,7 +101,26 @@ def initialize_localdir_project(
         reveal_tar, headers = urlretrieve(download_url)
         with tarfile.open(reveal_tar) as tar:
             members = clean_tar_members(tar.getmembers())
-            tar.extractall(str(project_path), members)
+            def is_within_directory(directory, target):
+                
+                abs_directory = os.path.abspath(directory)
+                abs_target = os.path.abspath(target)
+            
+                prefix = os.path.commonprefix([abs_directory, abs_target])
+                
+                return prefix == abs_directory
+            
+            def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+            
+                for member in tar.getmembers():
+                    member_path = os.path.join(path, member.name)
+                    if not is_within_directory(path, member_path):
+                        raise Exception("Attempted Path Traversal in Tar File")
+            
+                tar.extractall(path, members, numeric_owner=numeric_owner) 
+                
+            
+            safe_extract(tar, str(project_path), members)
         os.remove(reveal_tar)
     symlink = outdir / name
     if symlink.exists():
@@ -137,7 +156,26 @@ def initialize_localdir_style(
         style_tar, headers = urlretrieve(style_url)
         with tarfile.open(style_tar) as tar:
             members = clean_tar_members(tar.getmembers())
-            tar.extractall(str(style_path), members)
+            def is_within_directory(directory, target):
+                
+                abs_directory = os.path.abspath(directory)
+                abs_target = os.path.abspath(target)
+            
+                prefix = os.path.commonprefix([abs_directory, abs_target])
+                
+                return prefix == abs_directory
+            
+            def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+            
+                for member in tar.getmembers():
+                    member_path = os.path.join(path, member.name)
+                    if not is_within_directory(path, member_path):
+                        raise Exception("Attempted Path Traversal in Tar File")
+            
+                tar.extractall(path, members, numeric_owner=numeric_owner) 
+                
+            
+            safe_extract(tar, str(style_path), members)
         os.remove(style_tar)
     symlink.symlink_to(style_path, target_is_directory=True)
 
